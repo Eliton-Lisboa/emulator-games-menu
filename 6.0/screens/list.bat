@@ -11,7 +11,7 @@ set "result="
   if exist "data\users\%user-name%\emulator-location.txt" (
     set /p user-emulator-location=<"data\users\%user-name%\emulator-location.txt"
   ) else (
-    start /wait /shared messages\no-emulator-location
+    start /wait /shared screens\settings\emulator-location
 
     if exist "data\users\%user-name%\emulator-location.txt" (
       set /p user-emulator-location=<"data\users\%user-name%\emulator-location.txt"
@@ -21,7 +21,7 @@ set "result="
   if exist "data\users\%user-name%\roms-location.txt" (
     set /p user-roms-location=<"data\users\%user-name%\roms-location.txt"
   ) else (
-    start /wait /shared messages\no-roms-location
+    start /wait /shared screens\settings\roms-location
 
     if exist "data\users\%user-name%\roms-location.txt" (
       set /p user-roms-location=<"data\users\%user-name%\roms-location.txt"
