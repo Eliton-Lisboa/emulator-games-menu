@@ -4,10 +4,12 @@ set "user-emulator-location="
 set "user-roms-location="
 
 set "result="
+set height=14
 
 :ini (
   set "menu="
   set "menu-show="
+  set height=14
 
   if exist "data\users\!user-name!\emulator-location.txt" (
     set /p user-emulator-location=<"data\users\!user-name!\emulator-location.txt"
@@ -31,6 +33,7 @@ set "result="
 
   for /f "tokens=*" %%x in ('dir /b "!user-roms-location!"') do (
     set menu=!menu! "%%x"
+    set /a height=!height! + 1
 
     call lib\remove-at-first-char-by-last "%%x", ".", result
     call lib\center-text "!result!", result
@@ -39,9 +42,17 @@ set "result="
 
   for %%x in ("" Settings Back Exit) do (
     set menu=!menu! "%%x"
+    set /a height=!height! + 1
+
     call lib\center-text %%x, result
     set menu-show=!menu-show! "!result!"
   )
+
+  if !global-window-height! gtr !height! (
+    set height=!global-window-height!
+  )
+
+  mode !global-window-width!, !height!
 
   goto :home
 )
