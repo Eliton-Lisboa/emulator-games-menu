@@ -9,7 +9,7 @@ set "result="
 set "index="
 
 :ini (
-  set menu="Emulator location" "Roms location" "Change name" "Change password" "Share locations" "Delete account" "" "Back"
+  set menu="Emulator location" "Roms location" "Change name" "Change password" "Share locations" "Backup" "Delete account" "" "Back"
   set "menu-show="
 
   for %%x in (!menu!) do (
@@ -49,6 +49,9 @@ set "index="
     start /wait /shared screens\settings\share-locations
   )
   if !index! == 6 (
+    start /shared messages\not-implemented
+  )
+  if !index! == 7 (
     start /wait /shared screens\settings\confirm-password
 
     set /p answer=<"temp\confirm-password.txt"
@@ -60,7 +63,7 @@ set "index="
       exit
     )
   )
-  if !index! == 8 exit
+  if !index! == 9 exit
 
   goto :home
 )
