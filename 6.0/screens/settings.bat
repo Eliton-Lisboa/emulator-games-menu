@@ -10,7 +10,7 @@ set "result="
 set "index="
 
 :ini (
-  set menu="Emulator location" "Roms location" "Change name" "Change password" "Share locations" "Delete account" "" Back
+  set menu="Emulator location" "Roms location" "Change name" "Change password" "Share locations" "Delete account" "" "Back"
   set "menu-show="
 
   for %%x in (!menu!) do (
