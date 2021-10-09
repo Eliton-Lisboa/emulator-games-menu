@@ -9,7 +9,7 @@ color %global-color%
 set "result="
 
 :ini (
-  set menu="Emulator location" "Roms location" "Change password" "Delete account" "" Back
+  set menu="Emulator location" "Roms location" "Change name" "Change password" "Delete account" "" Back
   set "menu-show="
 
   for %%x in (!menu!) do (
@@ -37,9 +37,14 @@ set "result="
     start /wait /shared screens\settings\roms-location
   )
   if !errorlevel! == 3 (
-    start /wait /shared screens\settings\change-password
+    start /wait /shared screens\settings\change-name
+
+    if not exist "data\users\%user-name%" exit
   )
   if !errorlevel! == 4 (
+    start /wait /shared screens\settings\change-password
+  )
+  if !errorlevel! == 5 (
     start /wait /shared screens\settings\confirm-password
 
     set /p answer=<"temp\confirm-password.txt"
@@ -51,7 +56,7 @@ set "result="
       exit
     )
   )
-  if !errorlevel! == 6 exit
+  if !errorlevel! == 7 exit
 
   goto :home
 )
