@@ -2,14 +2,15 @@
 
 setlocal enabledelayedexpansion
 
-title %global-title% - Settings
-mode %global-window-width%, %global-window-height%
-color %global-color%
+title !global-title! - Settings
+mode !global-window-width!, !global-window-height!
+color !global-color!
 
 set "result="
+set "index="
 
 :ini (
-  set menu="Emulator location" "Roms location" "Change name" "Change password" "Delete account" "" Back
+  set menu="Emulator location" "Roms location" "Change name" "Change password" "Share locations" "Delete account" "" Back
   set "menu-show="
 
   for %%x in (!menu!) do (
@@ -29,34 +30,38 @@ set "result="
   echo.
 
   cmdmenusel f880 !menu-show!
+  set "index=!errorlevel!"
 
-  if !errorlevel! == 1 (
+  if !index! == 1 (
     start /wait /shared screens\settings\emulator-location
   )
-  if !errorlevel! == 2 (
+  if !index! == 2 (
     start /wait /shared screens\settings\roms-location
   )
-  if !errorlevel! == 3 (
+  if !index! == 3 (
     start /wait /shared screens\settings\change-name
 
-    if not exist "data\users\%user-name%" exit
+    if not exist "data\users\!user-name!" exit
   )
-  if !errorlevel! == 4 (
+  if !index! == 4 (
     start /wait /shared screens\settings\change-password
   )
-  if !errorlevel! == 5 (
+  if !index! == 5 (
+    start /wait /shared screens\settings\share-locations
+  )
+  if !index! == 6 (
     start /wait /shared screens\settings\confirm-password
 
     set /p answer=<"temp\confirm-password.txt"
 
     if "!answer!" == "y" (
-      rd /s /q "data\users\%user-name%"
+      rd /s /q "data\users\!user-name!"
 
       start index
       exit
     )
   )
-  if !errorlevel! == 7 exit
+  if !index! == 8 exit
 
   goto :home
 )
