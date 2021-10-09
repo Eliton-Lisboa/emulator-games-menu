@@ -84,6 +84,7 @@ set height=8
   set "result=!result:~1,-1!"
 
   if "!result!" == "None" (
+    echo.
     :home-location
       cecho  {0!error-level!}Type your emulator location:{0f} 
       set /p "new-value="
