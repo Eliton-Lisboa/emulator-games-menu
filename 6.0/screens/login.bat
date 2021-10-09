@@ -11,7 +11,7 @@ set "result="
 
 :ini (
   call lib\all-folder-dirs "data\users\", menu
-  set menu=!menu! Back
+  set menu=!menu! "" Back
 
   for %%x in (!menu!) do (
     call lib\center-text %%x, result
