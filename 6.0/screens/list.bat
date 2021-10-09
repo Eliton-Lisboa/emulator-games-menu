@@ -1,3 +1,4 @@
+setlocal enabledelayedexpansion
 
 set "user-emulator-location="
 set "user-roms-location="
@@ -8,27 +9,27 @@ set "result="
   set "menu="
   set "menu-show="
 
-  if exist "data\users\%user-name%\emulator-location.txt" (
-    set /p user-emulator-location=<"data\users\%user-name%\emulator-location.txt"
+  if exist "data\users\!user-name!\emulator-location.txt" (
+    set /p user-emulator-location=<"data\users\!user-name!\emulator-location.txt"
   ) else (
     start /wait /shared screens\settings\emulator-location
 
-    if exist "data\users\%user-name%\emulator-location.txt" (
-      set /p user-emulator-location=<"data\users\%user-name%\emulator-location.txt"
+    if exist "data\users\!user-name!\emulator-location.txt" (
+      set /p user-emulator-location=<"data\users\!user-name!\emulator-location.txt"
     ) else exit
   )
 
-  if exist "data\users\%user-name%\roms-location.txt" (
-    set /p user-roms-location=<"data\users\%user-name%\roms-location.txt"
+  if exist "data\users\!user-name!\roms-location.txt" (
+    set /p user-roms-location=<"data\users\!user-name!\roms-location.txt"
   ) else (
     start /wait /shared screens\settings\roms-location
 
-    if exist "data\users\%user-name%\roms-location.txt" (
-      set /p user-roms-location=<"data\users\%user-name%\roms-location.txt"
+    if exist "data\users\!user-name!\roms-location.txt" (
+      set /p user-roms-location=<"data\users\!user-name!\roms-location.txt"
     ) else exit
   )
 
-  for /f "tokens=*" %%x in ('dir /b "%user-roms-location%"') do (
+  for /f "tokens=*" %%x in ('dir /b "!user-roms-location!"') do (
     set menu=!menu! "%%x"
 
     call lib\remove-at-first-char-by-last "%%x", ".", result
@@ -42,6 +43,7 @@ set "result="
     set menu-show=!menu-show! "!result!"
   )
 
+  goto :home
 )
 
 :home (
@@ -50,7 +52,7 @@ set "result="
   call lib\draw "controll"
   echo.
 
-  cmdmenusel f880 %menu-show%
+  cmdmenusel f880 !menu-show!
 
   set index=0
 	set "result="
@@ -67,7 +69,8 @@ set "result="
   if "!result!" == "Settings" (
     start /wait /shared screens\settings
 
-    if not exist "data\users\%user-name%" exit
+    if not exist "data\users\!user-name!" exit
+    goto :ini
   ) else if "!result!" == "Back" (
     start index
     exit
