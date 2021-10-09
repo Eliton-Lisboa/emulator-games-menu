@@ -12,7 +12,7 @@ set "error-level=f"
   echo.
   call lib\draw "spreadsheet"
   echo.
-  call lib\draw-center-text "{0f}[{06}\.{0f}] Exit", 1
+  call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1
   call lib\draw-center-text "{0f}[{06}/.{0f}] Change name", 1
   call lib\draw-center-text "{0f}[{06}/..{0f}] Change pass", 1
   echo.

@@ -9,7 +9,7 @@ color %global-color%
 set "result="
 
 :ini (
-  set menu="Emulator location" "Roms location" "Change password" "Delete account" "" Exit
+  set menu="Emulator location" "Roms location" "Change password" "Delete account" "" Back
   set "menu-show="
 
   for %%x in (!menu!) do (
@@ -29,9 +29,6 @@ set "result="
   echo.
 
   cmdmenusel f880 !menu-show!
-
-  : -> ""Emulator location" "" "Exit""
-  : call lib\get-array-vector '!menu!', !errorlevel!, result
 
   if !errorlevel! == 1 (
     start /wait /shared screens\settings\emulator-location
