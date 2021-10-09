@@ -1,6 +1,6 @@
 setlocal & : [string, &result]
   set "string=%~1"
-  set "result=0"
+  set result=0
 
   :loop
   if "%string%" neq "" (
