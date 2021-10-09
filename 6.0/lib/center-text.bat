@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion & : [text, &result]
 	set "length=0"
 	set "result="
 
-	call .\lib\string-length "%~1", length
+	call lib\string-length "%~1", length
 
 	set /a space_add=!global-window-width! / 2
 	set /a space_add=!space_add! - !length! / 2

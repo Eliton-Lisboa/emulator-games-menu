@@ -1,7 +1,7 @@
 @echo off
 
 set "global-title=Console Games Menu"
-set global-color=0f
+set "global-color=0f"
 set global-window-width=60
 set global-window-height=30
 set "global-system-architecture=x64"

@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion & : [text, change colors count]
 	set "length=0"
 	set "result="
 
-	call .\lib\string-length "%~1", length
+	call lib\string-length "%~1", length
 
 	set /a space_add=!global-window-width! / 2
 	set /a space_add=!space_add! - !length! / 2
@@ -15,7 +15,8 @@ setlocal enabledelayedexpansion & : [text, change colors count]
 
 	set "result=!result!%~1"
 
-  cecho !result! & echo.
+  cecho !result! {%global-color%} & echo.
+
 (
 	endlocal
 	exit /b 0
