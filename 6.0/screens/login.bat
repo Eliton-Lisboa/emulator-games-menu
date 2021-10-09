@@ -5,6 +5,21 @@ set "user-pass-repeat="
 set "user-pass-original="
 
 set "error-level=f"
+set "menu="
+set "menu-show="
+set "result="
+
+:ini (
+  call lib\all-folder-dirs "data\users\", menu
+  set menu=!menu! Back
+
+  for %%x in (!menu!) do (
+    call lib\center-text %%x, result
+    set menu-show=!menu-show! "!result!"
+  )
+
+  goto :home
+)
 
 :home (
   cls
@@ -13,27 +28,28 @@ set "error-level=f"
   echo.
   call lib\draw "spreadsheet"
   echo.
-	call lib\draw-center-text "{0f}[{06}\.{0f}] Exit", 1
+	call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1
 	call lib\draw-center-text "{0f}[{06}/.{0f}] Change name", 1
-  echo.
   echo.
 
   :home-name (
-    cecho  {0%error-level%}Type your user name:{0f} 
-    set /p "user-name="
+    cmdmenusel f880 !menu-show!
 
-		if "%user-name%" == "\." screens\welcome
+    set index=0
+    set "result="
 
-    if "%user-name%" == "" (
-      set "error-level=c"
-      goto :home-name
+    for %%x in (!menu!) do (
+      set /a index=!index! + 1
+
+      if "!index!" == "!errorlevel!" (
+        set "result=%%x"
+      )
     )
-    if not exist "data\users\%user-name%" (
-      set "error-level=c"
-      goto :home-name
-    )
 
-    set "error-level=f"
+    if "!result!" == "Back" screens\welcome
+    set "user-name=!result!"
+
+    echo.
   )
 
   :home-pass (
