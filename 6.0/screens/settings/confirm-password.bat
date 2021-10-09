@@ -18,7 +18,7 @@ set "value="
   echo.
   call lib\draw-center-text "{0c}-{06}-{02}-{0f} Confirm your password {0c}-{06}-{02}-", 4
   echo.
-  call lib\draw-center-text "{0f}[{06}\.{0f}] Exit", 1
+  call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1
   echo.
   echo.
 
