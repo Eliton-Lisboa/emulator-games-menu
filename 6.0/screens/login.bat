@@ -1,3 +1,4 @@
+setlocal enabledelayedexpansion
 
 set "user-name="
 set "user-pass="
@@ -10,8 +11,11 @@ set "menu-show="
 set "result="
 
 :ini (
+  set "menu="
+  set "menu-show="
+
   call lib\all-folder-dirs "data\users\", menu
-  set menu=!menu! "" Back
+  set menu=!menu! "" "Back"
 
   for %%x in (!menu!) do (
     call lib\center-text %%x, result
@@ -32,7 +36,7 @@ set "result="
 	call lib\draw-center-text "{0f}[{06}/.{0f}] Change name", 1
   echo.
 
-  :home-name (
+  (
     cmdmenusel f880 !menu-show!
 
     set index=0
@@ -45,28 +49,31 @@ set "result="
         set "result=%%x"
       )
     )
+    set "result=!result:~1,-1!"
 
     if "!result!" == "Back" screens\welcome
-    set "user-name=!result:~1,-1!"
+    if "!result!" == "" goto :ini
+
+    set "user-name=!result!"
 
     echo.
   )
 
   :home-pass (
-    cecho  {0%error-level%}Type your user password:{0f} 
+    cecho  {0!error-level!}Type your user password:{0f} 
 
-    if "%global-system-architecture%" == "x64" (
+    if "!global-system-architecture!" == "x64" (
       editv64 -m -p "" user-pass
-    ) else if "%global-system-architecture%" == "x86" (
+    ) else if "!global-system-architecture!" == "x86" (
       editv32 -m -p "" user-pass
     )
 
-		if "%user-pass%" == "\." screens\welcome
-		if "%user-pass%" == "/." goto :home-name
+		if "!user-pass!" == "\." screens\welcome
+		if "!user-pass!" == "/." goto :ini
 
-		set /p user-pass-original=<"data\users\%user-name%\pass.txt"
+		set /p user-pass-original=<"data\users\!user-name!\pass.txt"
 
-    if "%user-pass%" neq "%user-pass-original%" (
+    if "!user-pass!" neq "!user-pass-original!" (
       set "error-level=c"
       goto :home-pass
     )
