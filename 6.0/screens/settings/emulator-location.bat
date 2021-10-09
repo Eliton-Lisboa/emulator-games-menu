@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 
 title !global-title! - Emulator location
-mode !global-window-width!, 10
+mode !global-window-width!, 8
 color !global-color!
 
 set "user-emulator-location="
@@ -12,6 +12,7 @@ set "new-value="
 set "result="
 set "menu="
 set "menu-show="
+set height=8
 
 :ini (
   if exist "data\users\!user-name!\emulator-location.txt" set /p user-emulator-location=<"data\users\!user-name!\emulator-location.txt"
@@ -24,6 +25,7 @@ set "menu-show="
   for %%x in (!result!) do (
     set "str=%%x"
     set "user=!str:~1,-1!"
+    set /a height=!height! + 1
 
     if "!user!" neq "!user-name!" if exist "data\users\!user!\share-emulator-location.txt" (
       set /p answer=<"data\users\!user!\share-emulator-location.txt"
@@ -41,16 +43,18 @@ set "menu-show="
     )
   )
 
-  call lib\center-text "None", result
-  set menu=!menu! "None"
-  set menu-show=!menu-show! "!result!"
 
-  set menu=!menu! ""
-  set menu-show=!menu-show! ""
+  for %%x in ("None" "" "Back") do (
+    set menu=!menu! %%x
+    set /a height=!height! + 1
 
-  call lib\center-text "Back", result
-  set menu=!menu! "Back"
-  set menu-show=!menu-show! "!result!"
+    call lib\center-text %%x, result
+    set menu-show=!menu-show! "!result!"
+  )
+
+  if 8 gtr !height! set height=8
+
+  mode !global-window-width!, !height!
 
   goto :home
 )
