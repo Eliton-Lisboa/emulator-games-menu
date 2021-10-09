@@ -1,6 +1,6 @@
 setlocal enabledelayedexpansion & : [text, change colors count]
-	set "space_add=0"
-	set "length=0"
+	set space_add=0
+	set length=0
 	set "result="
 
 	call lib\string-length "%~1", length
