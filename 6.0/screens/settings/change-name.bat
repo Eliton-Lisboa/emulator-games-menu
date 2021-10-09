@@ -1,8 +1,9 @@
 @echo off
+setlocal enabledelayedexpansion
 
-title %global-title% - Change name
-mode %global-window-width%, 10
-color %global-color%
+title !global-title! - Change name
+mode !global-window-width!, 10
+color !global-color!
 
 set "error-level=f"
 set "new-value="
@@ -17,23 +18,23 @@ set "new-value="
   echo.
 
   :home-name (
-    cecho  {0%error-level%}Type your new name:{0f} 
+    cecho  {0!error-level!}Type your new name:{0f} 
     set /p "new-value="
 
-    if "%new-value%" == "\." exit
-    if "%new-value%" == "%user-name%" (
+    if "!new-value!" == "\." exit
+    if "!new-value!" == "!user-name!" (
       set "error-level=6"
       goto :home-name
     )
 
-    if exist "data\users\%new-value%" (
+    if exist "data\users\!new-value!" (
       set "error-level=c"
       goto :home-name
     )
 
   )
 
-  ren "data\users\%user-name%" "%new-value%"
+  ren "data\users\!user-name!" "!new-value!"
 
   start index
   exit

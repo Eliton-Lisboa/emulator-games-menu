@@ -1,5 +1,4 @@
 @echo off
-
 setlocal enabledelayedexpansion
 
 title !global-title! - Settings

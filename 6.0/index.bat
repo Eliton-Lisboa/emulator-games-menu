@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 
 set "global-title=Console Games Menu"
 set "global-color=0f"
@@ -10,8 +11,8 @@ if not exist "\Program Files (x86)" (
   set "global-system-architecture=x86"
 )
 
-title %global-title%
-mode %global-window-width%, %global-window-height%
-color %global-color%
+title !global-title!
+mode !global-window-width!, !global-window-height!
+color !global-color!
 
 screens\welcome

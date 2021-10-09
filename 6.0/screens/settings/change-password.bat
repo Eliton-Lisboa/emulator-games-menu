@@ -1,8 +1,9 @@
 @echo off
+setlocal enabledelayedexpansion
 
-title %global-title% - Change password
-mode %global-window-width%, 10
-color %global-color%
+title !global-title! - Change password
+mode !global-window-width!, 10
+color !global-color!
 
 set "error-level=f"
 set "new-value="
@@ -17,23 +18,23 @@ set "new-value="
   echo.
 
   :home-pass (
-    cecho  {0%error-level%}Type your new password:{0f} 
+    cecho  {0!error-level!}Type your new password:{0f} 
 
-    if "%global-system-architecture%" == "x64" (
+    if "!global-system-architecture!" == "x64" (
       editv64 -m -p "" new-value
-    ) else if "%global-system-architecture%" == "x86" (
+    ) else if "!global-system-architecture!" == "x86" (
       editv32 -m -p "" new-value
     )
 
-    if "%new-value%" == "\." exit
-    if "%new-value%" == "%user-pass%" (
+    if "!new-value!" == "\." exit
+    if "!new-value!" == "!user-pass!" (
       set "error-level=c"
       goto :home-pass
     )
   )
 
-  echo %new-value%> "data\users\%user-name%\pass.txt"
-  set "user-pass=%new-value%"
+  echo !new-value!> "data\users\!user-name!\pass.txt"
+  set "user-pass=!new-value!"
 
   exit
 )
