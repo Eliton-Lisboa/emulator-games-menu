@@ -15,7 +15,7 @@ set "menu-show="
     set menu="Login"
   )
 
-  set menu=!menu! "Register" "" "Exit"
+  set menu=!menu! "Register" "Read user backup" "" "Exit"
 
   for %%x in (!menu!) do (
     call lib\center-text %%x, result
