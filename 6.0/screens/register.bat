@@ -33,7 +33,12 @@ set "error-level=f"
 
   :home-pass (
     cecho  {0%error-level%}Type your password:{0f} 
-    set /p "user-pass="
+
+    if "%global-system-architecture%" == "x64" (
+      editv64 -m -p "" user-pass
+    ) else if "%global-system-architecture%" == "x86" (
+      editv32 -m -p "" user-pass
+    )
 
     if "%user-pass%" == "\." screens\welcome
     if "%user-pass%" == "/." goto :home-name
@@ -47,7 +52,12 @@ set "error-level=f"
 
   :home-pass-repeat (
     cecho  {0%error-level%}Repeat your password:{0f} 
-    set /p "user-pass-repeat="
+
+    if "%global-system-architecture%" == "x64" (
+      editv64 -m -p "" user-pass-repeat
+    ) else if "%global-system-architecture%" == "x86" (
+      editv32 -m -p "" user-pass-repeat
+    )
 
     if "%user-pass-repeat%" == "\." screens\welcome
     if "%user-pass%" == "/." goto :home-name
