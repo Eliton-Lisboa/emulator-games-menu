@@ -47,7 +47,7 @@ set "result="
     )
 
     if "!result!" == "Back" screens\welcome
-    set "user-name=!result!"
+    set "user-name=!result:~1,-1!"
 
     echo.
   )
