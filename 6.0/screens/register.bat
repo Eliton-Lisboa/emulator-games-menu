@@ -13,16 +13,17 @@ set "error-level=f"
   echo.
   call lib\draw "spreadsheet"
   echo.
-  call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1
-  call lib\draw-center-text "{0f}[{06}/.{0f}] Change name", 1
-  call lib\draw-center-text "{0f}[{06}/..{0f}] Change pass", 1
+  call lib\draw-center-text "Type {06}'back'{!global-color!} to go back", 1
+  call lib\draw-center-text "Type {06}'name'{!global-color!} to rewrite the name", 1
+  call lib\draw-center-text "Type {06}'pass'{!global-color!} to rewrite the password", 1
   echo.
 
   :home-name (
     cecho  {0!error-level!}Type your name:{0f} 
     set /p "user-name="
 
-    if "!user-name!" == "\." screens\welcome
+    if "!user-name!" == "back" screens\welcome
+
     if exist "data\users\!user-name!" (
       set "error-level=c"
       goto :home-name
@@ -40,8 +41,9 @@ set "error-level=f"
       editv32 -m -p "" user-pass
     )
 
-    if "!user-pass!" == "\." screens\welcome
-    if "!user-pass!" == "/." goto :home-name
+    if "!user-pass!" == "back" screens\welcome
+    if "!user-pass!" == "name" goto :home-name
+
     if "!user-pass!" == "" (
       set "error-level=c"
       goto :home-pass
@@ -59,9 +61,10 @@ set "error-level=f"
       editv32 -m -p "" user-pass-repeat
     )
 
-    if "!user-pass-repeat!" == "\." screens\welcome
-    if "!user-pass!" == "/." goto :home-name
-    if "!user-pass!" == "/.." goto :home-pass
+    if "!user-pass-repeat!" == "back" screens\welcome
+    if "!user-pass!" == "name" goto :home-name
+    if "!user-pass!" == "pass" goto :home-pass
+
     if "!user-pass-repeat!" neq "!user-pass!" (
       set "error-level=c"
       goto :home-pass-repeat

@@ -13,12 +13,12 @@ set "new-value="
   echo.
   call lib\draw-title "Your password"
   echo.
-  call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1
+  call lib\draw-center-text "Type {06}'back'{!global-color!} to go back", 1
   echo.
   echo.
 
   :home-pass (
-    cecho  {0!error-level!}Type your new password:{0f} 
+    cecho  {0!error-level!}Type your new password:{!global-color!} 
 
     if "!global-system-architecture!" == "x64" (
       editv64 -m -p "" new-value
@@ -26,7 +26,8 @@ set "new-value="
       editv32 -m -p "" new-value
     )
 
-    if "!new-value!" == "\." exit
+    if "!new-value!" == "back" exit
+
     if "!new-value!" == "!user-pass!" (
       set "error-level=c"
       goto :home-pass

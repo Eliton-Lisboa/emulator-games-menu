@@ -32,8 +32,8 @@ set "result="
   echo.
   call lib\draw "spreadsheet"
   echo.
-	call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1
-	call lib\draw-center-text "{0f}[{06}/.{0f}] Change name", 1
+	call lib\draw-center-text "Type {06}'back'{!global-color!} to go back", 1
+	call lib\draw-center-text "Type {06}'name'{!global-color!} to rewrite the name", 1
   echo.
 
   (
@@ -59,8 +59,8 @@ set "result="
       editv32 -m -p "" user-pass
     )
 
-		if "!user-pass!" == "\." screens\welcome
-		if "!user-pass!" == "/." goto :ini
+		if "!user-pass!" == "back" screens\welcome
+		if "!user-pass!" == "name" goto :ini
 
 		set /p user-pass-original=<"data\users\!user-name!\pass.txt"
 

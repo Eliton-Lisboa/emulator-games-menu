@@ -13,7 +13,7 @@ set "new-value="
   echo.
   call lib\draw-title "Your name"
   echo.
-  call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1
+  call lib\draw-center-text "Type {06}'back'{!global-color!} to go back", 1
   echo.
   echo.
 
@@ -21,7 +21,8 @@ set "new-value="
     cecho  {0!error-level!}Type your new name:{0f} 
     set /p "new-value="
 
-    if "!new-value!" == "\." exit
+    if "!new-value!" == "back" exit
+
     if "!new-value!" == "!user-name!" (
       set "error-level=6"
       goto :home-name

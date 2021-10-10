@@ -64,7 +64,7 @@ set height=8
   call lib\draw-title "Your roms location"
   call lib\draw-center-text "{06}!user-roms-location!", 0
   echo.
-  call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1
+  call lib\draw-center-text "Type {06}'back'{!global-color!} to go back", 1
   echo.
   echo.
 
@@ -79,7 +79,8 @@ set height=8
       cecho  {0!error-level!}Type your roms location:{0f} 
       set /p "new-value="
 
-      if "!new-value!" == "\." goto :home
+      if "!new-value!" == "back" goto :home
+
       if not exist "!new-value!" (
         set "error-level=c"
         goto :home-location

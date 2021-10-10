@@ -19,7 +19,7 @@ set "value="
   echo.
   call lib\draw-title "Confirm your password"
   echo.
-  call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1
+  call lib\draw-center-text "Type {06}'back'{!global-color!} to go back", 1
   echo.
   echo.
 
@@ -32,7 +32,8 @@ set "value="
       editv32 -m -p "" value
     )
 
-    if "!value!" == "\." exit
+    if "!value!" == "back" exit
+
     if "!value!" neq "!user-pass!" (
       set "error-level=c"
       goto :home-pass
