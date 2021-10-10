@@ -1,4 +1,4 @@
-setlocal enableextensions enabledelayedexpansion
+setlocal enabledelayedexpansion
 
 set "result="
 
