@@ -28,7 +28,7 @@ set "result="
 :home (
   cls
   echo.
-  call lib\draw-center-text "{0c}-{06}-{02}-{0f} Console Games Menu {0c}-{06}-{02}-", 4
+  call lib\draw-title "Console Games Menu"
   echo.
   call lib\draw "spreadsheet"
   echo.

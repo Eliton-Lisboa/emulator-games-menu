@@ -62,7 +62,7 @@ set height=8
 :home (
   cls
   echo.
-  call lib\draw-center-text "{0c}-{06}-{02}-{0f} Your emulator location {0c}-{06}-{02}-", 4
+  call lib\draw-title "Your emulator location"
   call lib\draw-center-text "{06}!user-emulator-location!", 0
   echo.
   call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1

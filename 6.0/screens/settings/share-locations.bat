@@ -36,7 +36,7 @@ set "new-value="
 :home (
   cls
   echo.
-  call lib\draw-center-text "{0c}-{06}-{02}-{0f} Share locations {0c}-{06}-{02}-", 4
+  call lib\draw-title "Share locations"
   echo.
   echo.
   echo.

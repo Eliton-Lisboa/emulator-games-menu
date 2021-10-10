@@ -17,7 +17,7 @@ set "value="
 :home (
   cls
   echo.
-  call lib\draw-center-text "{0c}-{06}-{02}-{0f} Confirm your password {0c}-{06}-{02}-", 4
+  call lib\draw-title "Confirm your password"
   echo.
   call lib\draw-center-text "{0f}[{06}\.{0f}] Back", 1
   echo.
