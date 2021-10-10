@@ -23,7 +23,7 @@ set "index="
 :home (
   cls
   echo.
-  call lib\draw-center-text "{0c}-{06}-{02}-{0f} Settings {0c}-{06}-{02}-", 4
+  call lib\draw-title "Settings"
   echo.
   call lib\draw "settings"
   echo.
@@ -42,7 +42,7 @@ set "index="
   )
   if "!result!" == "Change password" start /wait /shared screens\settings\change-password
   if "!result!" == "Share locations" start /wait /shared screens\settings\share-locations
-  if "!result!" == "Backup" start /shared messages\not-implemented
+  
   if "!result!" == "Delete account" (
     start /wait /shared screens\settings\confirm-password
 
@@ -55,7 +55,7 @@ set "index="
       exit
     )
   )
-  if "!result!" == "Delete account" exit
+  if "!result!" == "Back" exit
 
   goto :home
 )
