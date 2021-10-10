@@ -7,7 +7,7 @@ color !global-color!
 
 set "user-emulator-location="
 
-set "error-level=f"
+set "error-level=!global-color-font!"
 set "new-value="
 set "result="
 set "menu="
@@ -77,18 +77,18 @@ set height=8
   if "!result!" == "None" (
     echo.
     :home-location
-      cecho  {0!error-level!}Type your emulator location:{0f} 
+      cecho  {!global-color-background!!error-level!}Type your emulator location:{!global-color!} 
       set /p "new-value="
 
       if "!new-value!" == "back" goto :home
 
       if not exist "!new-value!" (
-        set "error-level=c"
+        set "error-level=!global-color-error!"
         goto :home-location
       )
 
       if "!new-value!" == "!user-emulator-location!" (
-        set "error-level=6"
+        set "error-level=!global-color-warn!"
         goto :home-location
       )
 

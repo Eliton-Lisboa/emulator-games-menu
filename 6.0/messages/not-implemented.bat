@@ -18,7 +18,7 @@ set "result="
 :home (
   cls
   echo.
-  call lib\draw-center-text "{0c}-{06}-{02}-{0f} Not implemented feature {0c}-{06}-{02}-", 4
+  call lib\draw-title "Not implemented feature"
   echo.
   echo.
   echo.

@@ -1,5 +1,5 @@
 setlocal enabledelayedexpansion & : [text]
-	call lib\draw-center-text "{0c}-{06}-{02}-{0f} %~1 {0c}-{06}-{02}-", 4
+	call lib\draw-center-text "{&1c}-{&16}-{&12}-{&1&2} %~1 {&1c}-{&16}-{&12}-", 5
 
 (
 	endlocal

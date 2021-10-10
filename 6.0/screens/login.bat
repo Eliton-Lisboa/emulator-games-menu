@@ -5,7 +5,7 @@ set "user-pass="
 set "user-pass-repeat="
 set "user-pass-original="
 
-set "error-level=f"
+set "error-level=!global-color-font!"
 set "menu="
 set "menu-show="
 set "result="
@@ -51,7 +51,7 @@ set "result="
   )
 
   :home-pass (
-    cecho  {0!error-level!}Type your user password:{0f} 
+    cecho  {!global-color-background!!error-level!}Type your user password:{!global-color!} 
 
     if "!global-system-architecture!" == "x64" (
       editv64 -m -p "" user-pass
@@ -65,7 +65,7 @@ set "result="
 		set /p user-pass-original=<"data\users\!user-name!\pass.txt"
 
     if "!user-pass!" neq "!user-pass-original!" (
-      set "error-level=c"
+      set "error-level=!global-color-error!"
       goto :home-pass
     )
   )

@@ -13,9 +13,17 @@ setlocal enabledelayedexpansion & : [text, change colors count]
 		set "result=!result! "
 	)
 
-	set "result=!result!%~1"
+	set "text=%~1"
 
-  cecho !result! {%global-color%} & echo.
+	set text=!text:^&0=%global-color%!
+	set text=!text:^&1=%global-color-background%!
+	set text=!text:^&2=%global-color-font%!
+	set text=!text:^&3=%global-color-error%!
+	set text=!text:^&4=%global-color-warn%!
+
+	set "result=!result!!text!"
+
+  cecho !result! {!global-color!} & echo.
 
 (
 	endlocal

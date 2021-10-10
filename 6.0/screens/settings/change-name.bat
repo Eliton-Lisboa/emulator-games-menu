@@ -5,7 +5,7 @@ title !global-title! - Change name
 mode !global-window-width!, 10
 color !global-color!
 
-set "error-level=f"
+set "error-level=!global-color-font!"
 set "new-value="
 
 :home (
@@ -13,7 +13,7 @@ set "new-value="
   echo.
   call lib\draw-title "Your name"
   echo.
-  call lib\draw-center-text "Type {06}'back'{!global-color!} to go back", 1
+  call lib\draw-center-text "Type {&1&4}'back'{&0} to go back", 1
   echo.
   echo.
 
@@ -24,12 +24,12 @@ set "new-value="
     if "!new-value!" == "back" exit
 
     if "!new-value!" == "!user-name!" (
-      set "error-level=6"
+      set "error-level=!global-color-warn!"
       goto :home-name
     )
 
     if exist "data\users\!new-value!" (
-      set "error-level=c"
+      set "error-level=!global-color-error!"
       goto :home-name
     )
 

@@ -7,7 +7,7 @@ color !global-color!
 
 set "user-roms-location="
 
-set "error-level=f"
+set "error-level=!global-color-font!f"
 set "new-value="
 set "result="
 set "menu="
@@ -62,9 +62,9 @@ set height=8
   cls
   echo.
   call lib\draw-title "Your roms location"
-  call lib\draw-center-text "{06}!user-roms-location!", 0
+  call lib\draw-center-text "{&1&4}!user-roms-location!", 0
   echo.
-  call lib\draw-center-text "Type {06}'back'{!global-color!} to go back", 1
+  call lib\draw-center-text "Type {&1&4}'back'{&0} to go back", 1
   echo.
   echo.
 
@@ -76,18 +76,18 @@ set height=8
   if "!result!" == "None" (
     echo.
     :home-location
-      cecho  {0!error-level!}Type your roms location:{0f} 
+      cecho  {!global-color-background!!error-level!}Type your roms location:{!global-color!} 
       set /p "new-value="
 
       if "!new-value!" == "back" goto :home
 
       if not exist "!new-value!" (
-        set "error-level=c"
+        set "error-level=!global-color-error!"
         goto :home-location
       )
 
       if "!new-value!" == "!user-roms-location!" (
-        set "error-level=6"
+        set "error-level=!global-color-warn!"
         goto :home-location
       )
 

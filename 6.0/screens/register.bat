@@ -4,7 +4,7 @@ set "user-name="
 set "user-pass="
 set "user-pass-repeat="
 
-set "error-level=f"
+set "error-level=!global-color-font!"
 
 :home (
   cls
@@ -13,27 +13,27 @@ set "error-level=f"
   echo.
   call lib\draw "spreadsheet"
   echo.
-  call lib\draw-center-text "Type {06}'back'{!global-color!} to go back", 1
-  call lib\draw-center-text "Type {06}'name'{!global-color!} to rewrite the name", 1
-  call lib\draw-center-text "Type {06}'pass'{!global-color!} to rewrite the password", 1
+  call lib\draw-center-text "Type {&1&4}'back'{&0} to go back", 1
+  call lib\draw-center-text "Type {&1&4}'name'{&0} to rewrite the name", 1
+  call lib\draw-center-text "Type {&1&4}'pass'{&0} to rewrite the password", 1
   echo.
 
   :home-name (
-    cecho  {0!error-level!}Type your name:{0f} 
+    cecho  {!global-color-background!!error-level!}Type your name:{!global-color!} 
     set /p "user-name="
 
     if "!user-name!" == "back" screens\welcome
 
     if exist "data\users\!user-name!" (
-      set "error-level=c"
+      set "error-level=!global-color-error!"
       goto :home-name
     )
 
-    set "error-level=f"
+    set "error-level=!global-color-font!"
   )
 
   :home-pass (
-    cecho  {0!error-level!}Type your password:{0f} 
+    cecho  {!global-color-background!!error-level!}Type your password:{!global-color!} 
 
     if "!global-system-architecture!" == "x64" (
       editv64 -m -p "" user-pass
@@ -45,15 +45,15 @@ set "error-level=f"
     if "!user-pass!" == "name" goto :home-name
 
     if "!user-pass!" == "" (
-      set "error-level=c"
+      set "error-level=!global-color-error!"
       goto :home-pass
     )
 
-    set "error-level=f"
+    set "error-level=!global-color-font!"
   )
 
   :home-pass-repeat (
-    cecho  {0!error-level!}Repeat your password:{0f} 
+    cecho  {!global-color-background!!error-level!}Repeat your password:{!global-color!} 
 
     if "!global-system-architecture!" == "x64" (
       editv64 -m -p "" user-pass-repeat
@@ -66,7 +66,7 @@ set "error-level=f"
     if "!user-pass!" == "pass" goto :home-pass
 
     if "!user-pass-repeat!" neq "!user-pass!" (
-      set "error-level=c"
+      set "error-level=!global-color-error!"
       goto :home-pass-repeat
     )
   )
