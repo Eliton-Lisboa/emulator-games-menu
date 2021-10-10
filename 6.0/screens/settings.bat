@@ -33,8 +33,8 @@ set "index="
   call lib\get-array-vector menu, !errorlevel!, result
   set result=!result:~1,-1!
 
-  if "!result!" == "Emulator location" start /wait /shared screens\settings\emulator-location
-  if "!result!" == "Roms location" start /wait /shared screens\settings\roms-location
+  if "!result!" == "Emulator location" start /wait /shared screens\settings\change-emulator-location
+  if "!result!" == "Roms location" start /wait /shared screens\settings\change-roms-location
   if "!result!" == "Change name" (
     start /wait /shared screens\settings\change-name
 
