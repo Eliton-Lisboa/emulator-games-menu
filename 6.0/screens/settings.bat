@@ -29,29 +29,21 @@ set "index="
   echo.
 
   cmdmenusel f880 !menu-show!
-  set "index=!errorlevel!"
 
-  if !index! == 1 (
-    start /wait /shared screens\settings\emulator-location
-  )
-  if !index! == 2 (
-    start /wait /shared screens\settings\roms-location
-  )
-  if !index! == 3 (
+  call lib\get-array-vector menu, !errorlevel!, result
+  set result=!result:~1,-1!
+
+  if "!result!" == "Emulator location" start /wait /shared screens\settings\emulator-location
+  if "!result!" == "Roms location" start /wait /shared screens\settings\roms-location
+  if "!result!" == "Change name" (
     start /wait /shared screens\settings\change-name
 
     if not exist "data\users\!user-name!" exit
   )
-  if !index! == 4 (
-    start /wait /shared screens\settings\change-password
-  )
-  if !index! == 5 (
-    start /wait /shared screens\settings\share-locations
-  )
-  if !index! == 6 (
-    start /shared messages\not-implemented
-  )
-  if !index! == 7 (
+  if "!result!" == "Change password" start /wait /shared screens\settings\change-password
+  if "!result!" == "Share locations" start /wait /shared screens\settings\share-locations
+  if "!result!" == "Backup" start /shared messages\not-implemented
+  if "!result!" == "Delete account" (
     start /wait /shared screens\settings\confirm-password
 
     set /p answer=<"temp\confirm-password.txt"
@@ -63,7 +55,7 @@ set "index="
       exit
     )
   )
-  if !index! == 9 exit
+  if "!result!" == "Delete account" exit
 
   goto :home
 )

@@ -1,4 +1,4 @@
-setlocal enabledelayedexpansion
+setlocal enableextensions enabledelayedexpansion
 
 set "result="
 
@@ -35,11 +35,12 @@ set "menu-show="
 
   cmdmenusel f880 !menu-show!
 
-  call lib\get-array-vector "!menu!", !errorlevel!, result
+  call lib\get-array-vector menu, !errorlevel!, result
+  set result=!result:~1,-1!
 
-  if "!result:~1,-1!" == "Exit" exit
-  if "!result:~1,-1!" == "Register" screens\register
-  if "!result:~1,-1!" == "Login" screens\login
+  if "!result!" == "Register" screens\register
+  if "!result!" == "Login" screens\login
+  if "!result!" == "Exit" exit
 
   goto :ini
 )

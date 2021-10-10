@@ -65,16 +65,7 @@ set height=14
 
   cmdmenusel f880 !menu-show!
 
-  set index=0
-	set "result="
-
-	for %%x in (!menu!) do (
-		set /a index=!index! + 1
-
-		if "!index!" == "!errorlevel!" (
-      set "result=%%x"
-		)
-	)
+  call lib\get-array-vector menu, !errorlevel!, result
   set result=!result:~1,-1!
 
   if "!result!" == "Settings" (

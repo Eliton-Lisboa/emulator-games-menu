@@ -1,8 +1,8 @@
-setlocal enabledelayedexpansion & : [array, vector number, &result]
+setlocal enabledelayedexpansion & : [array : ref, vector number, &result]
 	set index=0
 	set "result="
 
-	for %%x in (%~1) do (
+	for %%x in (!%~1!) do (
 		set /a index=!index! + 1
 
 		if "!index!" == "%~2" (
