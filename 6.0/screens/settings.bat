@@ -42,7 +42,7 @@ set "index="
   )
   if "!result!" == "Change password" start /wait /shared screens\settings\change-password
   if "!result!" == "Share locations" start /wait /shared screens\settings\share-locations
-  
+  if "!result!" == "Backup" start /wait /shared screens\settings\backup
   if "!result!" == "Delete account" (
     start /wait /shared screens\settings\confirm-password
 
