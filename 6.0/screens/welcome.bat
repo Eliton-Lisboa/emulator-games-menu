@@ -15,7 +15,7 @@ set "menu-show="
     set menu="Login"
   )
 
-  set menu=!menu! "Register" "Read user backup" "" "Exit"
+  set menu=!menu! "Register" "Read backup" "" "Exit"
 
   for %%x in (!menu!) do (
     call lib\center-text %%x, result
@@ -40,6 +40,7 @@ set "menu-show="
 
   if "!result!" == "Register" screens\register
   if "!result!" == "Login" screens\login
+  if "!result!" == "Read backup" start /wait /shared screens\welcome\read-backup
   if "!result!" == "Exit" exit
 
   goto :ini

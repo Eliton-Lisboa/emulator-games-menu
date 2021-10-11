@@ -1,23 +1,22 @@
 @echo off
 setlocal enabledelayedexpansion
 
-title !global-title! - Backup
+title !global-title! - Message
 mode !global-window-width!, 10
 color !global-color!
 
-set "menu="
 set "menu-show="
-
 set "result="
 
 :ini (
-  set menu="Create backup" "Read backup" "" "Back"
-  set "menu-show="
+  set menu="Yes" "No"
 
   for %%x in (!menu!) do (
     call lib\center-text %%x, result
     set menu-show=!menu-show! "!result!"
   )
+
+  echo n> "temp\confirm.txt"
 
   goto :home
 )
@@ -25,7 +24,10 @@ set "result="
 :home (
   cls
   echo.
-  call lib\draw-title "Backup"
+  call lib\draw-title "Confirm"
+  echo.
+  echo  %~1
+  echo.
   echo.
   echo.
 
@@ -34,9 +36,8 @@ set "result="
   call lib\get-array-vector menu, !errorlevel!, result
   set result=!result:~1,-1!
 
-  if "!result!" == "Create backup" screens\settings\backup\create-backup
-  if "!result!" == "Read backup" screens\settings\backup\read-backup
-  if "!result!" == "Exit" exit
+  if "!result!" == "Yes" echo y> temp\confirm.txt
+  if "!result!" == "No" echo n> temp\confirm.txt
 
-  goto :home
+  exit
 )

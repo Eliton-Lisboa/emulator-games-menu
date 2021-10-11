@@ -35,7 +35,12 @@ set height=14
     set menu=!menu! "%%x"
     set /a height=!height! + 1
 
-    call lib\remove-at-first-char-by-last "%%x", ".", result
+    if exist "!user-roms-location!\%%x\*" (
+      set result=%%x/
+    ) else (
+      call lib\remove-at-first-char-by-last "%%x", ".", result
+    )
+
     call lib\center-text "!result!", result
     set menu-show=!menu-show! "!result!"
   )
