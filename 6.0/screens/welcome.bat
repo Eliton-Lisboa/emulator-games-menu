@@ -1,21 +1,15 @@
 setlocal enabledelayedexpansion
 
-set "result="
+title !window-title! - Welcome
 
 set "menu="
 set "menu-show="
 
+set "result="
+
 :ini (
-  set "menu="
+  set menu="Login" "Register" "Read backup" "" "Exit"
   set "menu-show="
-
-  call lib\all-folder-dirs "data\users\", result
-
-  if "!result!" neq "" (
-    set menu="Login"
-  )
-
-  set menu=!menu! "Register" "Read backup" "" "Exit"
 
   for %%x in (!menu!) do (
     call lib\center-text %%x, result
@@ -28,7 +22,7 @@ set "menu-show="
 :home (
   cls
   echo.
-  call lib\draw-title "Console Games Menu"
+  call components\draw-title "Welcome"
   echo.
   call lib\draw "montain"
   echo.
@@ -43,5 +37,5 @@ set "menu-show="
   if "!result!" == "Read backup" start /wait /shared screens\welcome\read-backup
   if "!result!" == "Exit" exit
 
-  goto :ini
+  goto :home
 )

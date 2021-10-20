@@ -6,20 +6,21 @@ setlocal enabledelayedexpansion & : [name]
 		for /f "usebackq tokens=*" %%x in ("lib\drawings\%~1.txt") do (
 			set value=%%x
 
-			set value=!value:^&0=%global-color%!
-			set value=!value:^&1=%global-color-background%!
-			set value=!value:^&2=%global-color-font%!
-			set value=!value:^&3=%global-color-error%!
-			set value=!value:^&4=%global-color-warn%!
+			set value=!value:^&0=%window-color%!
+			set value=!value:^&1=%window-color-background%!
+			set value=!value:^&2=%window-color-font%!
+			set value=!value:^&3=%window-color-error%!
+			set value=!value:^&4=%window-color-warn%!
+			set value=!value:^&5=%window-color-success%!
 
 			cecho !value! & echo.
 		)
 
 		echo.
 
-		cecho {%global-color%}
+		cecho {!window-color!}
 	) else (
-		set "result=Draw not found"
+		call lib\draw-center-text "{&1&3}Draw not found", 1
 	)
 
 (

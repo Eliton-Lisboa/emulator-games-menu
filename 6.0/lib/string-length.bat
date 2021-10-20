@@ -1,11 +1,11 @@
-setlocal & : [string, &result]
+setlocal enabledelayedexpansion & : [string, &result]
   set "string=%~1"
   set result=0
 
   :loop
-  if "%string%" neq "" (
-    set "string=%string:~1%"
-    set /a result=%result% + 1
+  if "!string!" neq "" (
+    set "string=!string:~1!"
+    set /a result=!result! + 1
     goto :loop
   )
 

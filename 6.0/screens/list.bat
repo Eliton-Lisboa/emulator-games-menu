@@ -1,69 +1,89 @@
 setlocal enabledelayedexpansion
 
-set "user-emulator-location="
+title !window-title! - List
+
 set "user-roms-location="
+set "user-emulator-location="
+set "menu="
+set "menu-show="
 
 set "result="
-set height=14
+set "folder="
 
 :ini (
+  call database\get\emulator-location "!user-name!", user-emulator-location
+  call database\get\roms-location "!user-name!", user-roms-location
+  call database\get\roms-location "!user-name!", folder
+
+  if "!user-emulator-location!" == "" (
+    start /wait /shared screens\settings\change-emulator-location
+
+    call database\get\emulator-location "!user-name!", user-emulator-location
+    if "!user-emulator-location!" == "" exit
+  )
+
+  if "!user-roms-location!" == "" (
+    start /wait /shared screens\settings\change-roms-location
+
+    call database\get\roms-location "!user-name!", user-roms-location
+    call database\get\roms-location "!user-name!", folder
+    if "!user-roms-location!" == "" exit
+  )
+
+  goto :reload
+)
+
+:reload (
   set "menu="
   set "menu-show="
-  set height=14
 
-  if exist "data\users\!user-name!\emulator-location.txt" (
-    set /p user-emulator-location=<"data\users\!user-name!\emulator-location.txt"
-  ) else (
-    start /wait /shared screens\settings\emulator-location
+  for /f "tokens=*" %%x in ('dir /b "!folder!"') do (
+    if exist "!folder!\%%x\*" (
+      set menu=!menu! "%%x\\"
 
-    if exist "data\users\!user-name!\emulator-location.txt" (
-      set /p user-emulator-location=<"data\users\!user-name!\emulator-location.txt"
-    ) else exit
-  )
-
-  if exist "data\users\!user-name!\roms-location.txt" (
-    set /p user-roms-location=<"data\users\!user-name!\roms-location.txt"
-  ) else (
-    start /wait /shared screens\settings\roms-location
-
-    if exist "data\users\!user-name!\roms-location.txt" (
-      set /p user-roms-location=<"data\users\!user-name!\roms-location.txt"
-    ) else exit
-  )
-
-  for /f "tokens=*" %%x in ('dir /b "!user-roms-location!"') do (
-    set menu=!menu! "%%x"
-    set /a height=!height! + 1
-
-    if exist "!user-roms-location!\%%x\*" (
-      set result=%%x/
-    ) else (
-      call lib\remove-at-first-char-by-last "%%x", ".", result
+      call lib\center-text "%%x\\", result
+      set menu-show=!menu-show! "!result!"
     )
-
-    call lib\center-text "!result!", result
-    set menu-show=!menu-show! "!result!"
   )
 
-  for %%x in ("" Settings Back Exit) do (
-    set menu=!menu! "%%x"
-    set /a height=!height! + 1
+  for /f "tokens=*" %%x in ('dir /b "!folder!"') do (
+    if not exist "!folder!\%%x\*" (
+      set menu=!menu! "%%x"
+
+      call lib\remove-extenssion "%%x", result
+      call lib\center-text "!result!", result
+      set menu-show=!menu-show! "!result!"
+    )
+  )
+
+  for %%x in ("" "Settings") do (
+    set menu=!menu! %%x
 
     call lib\center-text %%x, result
     set menu-show=!menu-show! "!result!"
   )
 
-  if !global-window-height! gtr !height! (
-    set height=!global-window-height!
+  if "!folder!" neq "!user-roms-location!" (
+    set menu=!menu! "Go back"
+
+    call lib\center-text "Go back", result
+    set menu-show=!menu-show! "!result!"
   )
 
-  mode !global-window-width!, !height!
+  for %%x in ("Back" "Exit") do (
+    set menu=!menu! %%x
+
+    call lib\center-text %%x, result
+    set menu-show=!menu-show! "!result!"
+  )
 
   goto :home
 )
 
 :home (
   cls
+  echo.
+  call components\draw-title "Console Games Menu"
   echo.
   call lib\draw "controll"
   echo.
@@ -76,16 +96,24 @@ set height=14
   if "!result!" == "Settings" (
     start /wait /shared screens\settings
 
-    if not exist "data\users\!user-name!" exit
-    goto :ini
-  ) else if "!result!" == "Back" (
-    start index
-    exit
-  ) else if "!result!" == "Exit" (
-    exit
-  ) else if !result! neq "" (
-    !user-emulator-location! "!user-roms-location!\!result!"
+    if !errorlevel! == 1 exit
+    goto :reload
+  )
+  if "!result!" == "Go back" (
+    call lib\go-back-folder "!folder!", folder
+    goto :reload
+  )
+  if "!result!" == "Back" screens\welcome
+  if "!result!" == "Exit" exit
+  if "!result!" neq "" (
+
+    if "!result:~-1,1!" == "\" (
+      set "folder=!folder!\!result:~0,-2!"
+    ) else (
+      !user-emulator-location! "!folder!\!result!"
+    )
+
   )
 
-  goto :home
+  goto :reload
 )

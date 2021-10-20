@@ -1,20 +1,19 @@
 setlocal enabledelayedexpansion
 
-set "user-name="
-set "user-pass="
-set "user-pass-repeat="
-set "user-pass-original="
+title !window-title! - Login
 
-set "error-level=!global-color-font!"
 set "menu="
 set "menu-show="
+set "tmp-user-name="
+set "tmp-user-pass="
+
 set "result="
+set error-level=0
 
 :ini (
-  set "menu="
   set "menu-show="
 
-  call lib\all-folder-dirs "data\users\", menu
+  call database\get\all-users menu
   set menu=!menu! "" "Back"
 
   for %%x in (!menu!) do (
@@ -28,15 +27,16 @@ set "result="
 :home (
   cls
   echo.
-  call lib\draw-title "Console Games Menu"
+  call components\draw-title "Login"
   echo.
   call lib\draw "spreadsheet"
   echo.
-	call lib\draw-center-text "Type {06}'back'{!global-color!} to go back", 1
-	call lib\draw-center-text "Type {06}'name'{!global-color!} to rewrite the name", 1
+  call lib\draw-center-text "Type {&1&4}'name'{&0} to reselect the name", 1
+  call lib\draw-center-text "Type {&1&4}'recovery'{&0} to recovery account", 1
+  call lib\draw-center-text "Type {&1&4}'back'{&0} to go back", 1
   echo.
 
-  (
+  :home-name (
     cmdmenusel f880 !menu-show!
 
     call lib\get-array-vector menu, !errorlevel!, result
@@ -45,30 +45,33 @@ set "result="
     if "!result!" == "Back" screens\welcome
     if "!result!" == "" goto :ini
 
-    set "user-name=!result!"
-
-    echo.
+    set tmp-user-name=!result!
   )
 
-  :home-pass (
-    cecho  {!global-color-background!!error-level!}Type your user password:{!global-color!} 
+  echo.
 
-    if "!global-system-architecture!" == "x64" (
-      editv64 -m -p "" user-pass
-    ) else if "!global-system-architecture!" == "x86" (
-      editv32 -m -p "" user-pass
+  :home-pass (
+    call components\draw-input-errorlevel "Type your user password", !error-level!
+    call components\type-password tmp-user-pass
+
+    if "!tmp-user-pass!" == "back" screens\welcome
+    if "!tmp-user-pass!" == "name" goto :ini
+    if "!tmp-user-pass!" == "recovery" (
+      set user-name=!tmp-user-name!
+      start /wait /shared screens\settings\recovery
+      goto :home-pass
     )
 
-		if "!user-pass!" == "back" screens\welcome
-		if "!user-pass!" == "name" goto :ini
+    call database\valid\login "!tmp-user-name!", "!tmp-user-pass!", result
 
-		set /p user-pass-original=<"data\users\!user-name!\pass.txt"
-
-    if "!user-pass!" neq "!user-pass-original!" (
-      set "error-level=!global-color-error!"
+    if "!result!" == "n" (
+      set error-level=3
       goto :home-pass
     )
   )
+
+  set user-name=!tmp-user-name!
+  set user-pass=!tmp-user-pass!
 
   screens\list
 )

@@ -1,9 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
 
-title !global-title! - Backup
-mode !global-window-width!, 10
-color !global-color!
+title !window-title! - Backup
+mode !window-size-width!, 10
+color !window-color!
 
 set "menu="
 set "menu-show="
@@ -25,7 +25,7 @@ set "result="
 :home (
   cls
   echo.
-  call lib\draw-title "Backup"
+  call components\draw-title "Backup"
   echo.
   echo.
 
@@ -36,7 +36,7 @@ set "result="
 
   if "!result!" == "Create backup" screens\settings\backup\create-backup
   if "!result!" == "Read backup" screens\settings\backup\read-backup
-  if "!result!" == "Exit" exit
+  if "!result!" == "Back" exit
 
   goto :home
 )

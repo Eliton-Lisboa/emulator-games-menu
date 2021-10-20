@@ -1,15 +1,15 @@
 @echo off
 setlocal enabledelayedexpansion
 
-title !global-title! - Settings
-mode !global-window-width!, !global-window-height!
-color !global-color!
+title !window-title! - Settings
+mode !window-size!
+color !window-color!
 
 set "result="
 set "index="
 
 :ini (
-  set menu="Emulator location" "Roms location" "Change name" "Change password" "Share locations" "Backup" "Delete account" "" "Back"
+  set menu="Emulator location" "Roms location" "Change name" "Change password" "Share locations" "Recovery account" "Backup" "Delete account" "" "Back"
   set "menu-show="
 
   for %%x in (!menu!) do (
@@ -23,7 +23,7 @@ set "index="
 :home (
   cls
   echo.
-  call lib\draw-title "Settings"
+  call components\draw-title "Settings"
   echo.
   call lib\draw "settings"
   echo.
@@ -35,25 +35,19 @@ set "index="
 
   if "!result!" == "Emulator location" start /wait /shared screens\settings\change-emulator-location
   if "!result!" == "Roms location" start /wait /shared screens\settings\change-roms-location
-  if "!result!" == "Change name" (
-    start /wait /shared screens\settings\change-name
+  @REM if "!result!" == "Change name" (
+  @REM   start /wait /shared screens\settings\change-name
 
-    if not exist "data\users\!user-name!" exit
-  )
-  if "!result!" == "Change password" start /wait /shared screens\settings\change-password
-  if "!result!" == "Share locations" start /wait /shared screens\settings\share-locations
+  @REM   if not exist "data\users\!user-name!" exit
+  @REM )
+  @REM if "!result!" == "Change password" start /wait /shared screens\settings\change-password
+  @REM if "!result!" == "Share locations" start /wait /shared screens\settings\share-locations
+  if "!result!" == "Recovery account" start /wait /shared screens\settings\recovery
   if "!result!" == "Backup" start /wait /shared screens\settings\backup
   if "!result!" == "Delete account" (
-    start /wait /shared screens\settings\confirm-password
+    start /wait /shared /min database\delete "!user-name!", result
 
-    set /p answer=<"temp\confirm-password.txt"
-
-    if "!answer!" == "y" (
-      rd /s /q "data\users\!user-name!"
-
-      start index
-      exit
-    )
+    if "!result!" == "y" exit /b 1
   )
   if "!result!" == "Back" exit
 

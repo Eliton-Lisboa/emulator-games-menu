@@ -1,29 +1,22 @@
 setlocal enabledelayedexpansion & : [text, change colors count]
-	set space_add=0
-	set length=0
-	set "result="
+	set "result=%~1"
+	set add=0
 
-	call lib\string-length "%~1", length
+	set result=!result:^&0=%window-color%!
+	set result=!result:^&1=%window-color-background%!
+	set result=!result:^&2=%window-color-font%!
+	set result=!result:^&3=%window-color-error%!
+	set result=!result:^&4=%window-color-warn%!
+	set result=!result:^&5=%window-color-success%!
 
-	set /a space_add=!global-window-width! / 2
-	set /a space_add=!space_add! - !length! / 2
-	set /a space_add=!space_add! - 2 + (%~2 * 4)
+	call lib\center-text "!result!", result
+	set /a add=%~2 * 3 + 3
 
-	for /l %%# in (0, 1, !space_add!) do (
-		set "result=!result! "
+	for /l %%z in (0, 1, %add%) do (
+		set "result= !result!"
 	)
 
-	set "text=%~1"
-
-	set text=!text:^&0=%global-color%!
-	set text=!text:^&1=%global-color-background%!
-	set text=!text:^&2=%global-color-font%!
-	set text=!text:^&3=%global-color-error%!
-	set text=!text:^&4=%global-color-warn%!
-
-	set "result=!result!!text!"
-
-  cecho !result! {!global-color!} & echo.
+  cecho !result! {!window-color!} & echo.
 
 (
 	endlocal

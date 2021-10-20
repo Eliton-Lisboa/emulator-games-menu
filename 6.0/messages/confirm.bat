@@ -1,11 +1,13 @@
-@echo off
+@echo off & : [message]
 setlocal enabledelayedexpansion
 
-title !global-title! - Message
-mode !global-window-width!, 10
-color !global-color!
+title !window-title! - Message
+mode !window-size-width!, 10
+color !window-color!
 
+set "menu="
 set "menu-show="
+
 set "result="
 
 :ini (
@@ -24,7 +26,7 @@ set "result="
 :home (
   cls
   echo.
-  call lib\draw-title "Confirm"
+  call components\draw-title "Confirm"
   echo.
   echo  %~1
   echo.
