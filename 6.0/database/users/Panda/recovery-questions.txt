@@ -1,3 +1,4 @@
-Ok=kO
-Lm=mL
-Op=pO
+ 
+Lm:mL
+Po:oP
+qW:Wq

@@ -1,4 +1,4 @@
  
-Ok=kO
-Lm=mL
-Op=pO
+Ok:kO
+Lm:mL
+Op:pO
