@@ -19,6 +19,7 @@ set error-level=0
 set "prop-name="
 set "prop-value="
 
+set "temp="
 set "result="
 set "result-index="
 
@@ -108,13 +109,38 @@ set "result-index="
     for /f "usebackq tokens=1,2 delims=^=" %%a in ("!backup-local!") do (
       if "%%a" neq "user-name" if "%%a" neq "pass" (
         set /a index+=1
+        set "if-or=n"
+        set "temp="
+
         call lib\get-array-vector check-list, !index!, result
 
         if "!result!" == "y" (
-          call database\update\%%a !user-name!, "%%b"
+          set prop-name=%%a
+
+          call lib\string-contains "%%a", "location", result
+          if "!result!" == "y" set "prop-name=locations"
+
+          call lib\string-contains "%%a", "share", result
+          if "!result!" == "y" set "prop-name=share-locations"
+
+          if "!prop-name!" == "locations" set "if-or=y"
+          if "!prop-name!" == "share-locations" set "if-or=y"
+
+          if "!if-or!" == "y" (
+            if "%%a" == "roms-location" set "temp=roms"
+            if "%%a" == "emulator-location" set "temp=emulator"
+
+            if "%%a" == "share-roms-location" set "temp=roms"
+            if "%%a" == "share-emulator-location" set "temp=emulator"
+
+            call database\update\!prop-name! !user-name!, "!temp!", "%%b"
+          ) else (
+            call database\update\!prop-name! !user-name!, "%%b"
+          )
         )
 
       )
+
     )
 
     exit

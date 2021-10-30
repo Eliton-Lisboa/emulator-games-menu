@@ -23,7 +23,9 @@ setlocal enabledelayedexpansion & : [local, &result in error level]
       set "prop-value=!prop-value!;%%y"
     )
 
-    echo !prop-name!:!prop-value:~1!>> "!file-path!"
+    set prop-value=!prop-value:~1!
+
+    echo !prop-name!=!prop-value!>> "!file-path!"
   )
 
   :end

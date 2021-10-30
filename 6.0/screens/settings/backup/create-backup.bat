@@ -15,7 +15,7 @@ set error-level=0
   echo.
   call components\draw-title "Create backup"
   echo.
-  call lib\draw-center-text "Type {&1&4}'back'{&0} to go back", 1
+  call lib\draw-center-text "Type '{&1&4}back{&0}' to go back", 1
   echo.
   echo.
 
