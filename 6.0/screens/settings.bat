@@ -46,6 +46,15 @@ set "index="
       start /wait /shared screens\settings\change-password
     )
   )
+  if "!result!" == "Change recovery questions" (
+    start /wait /shared messages\confirm-pass !user-name!
+
+    set /p answer=< "temp\confirm-pass.txt"
+
+    if "!answer!" == "y" (
+      start /wait /shared screens\settings\change-recovery-questions
+    )
+  )
   if "!result!" == "Share locations" start /wait /shared screens\settings\share-locations
   if "!result!" == "Recovery account" start /wait /shared screens\settings\recovery
   if "!result!" == "Backup" start /wait /shared screens\settings\backup
