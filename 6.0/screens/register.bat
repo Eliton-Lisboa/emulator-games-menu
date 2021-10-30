@@ -96,6 +96,7 @@ set "if-or=n"
       set /p "new-answers-1="
 
       if "!new-user-questions-1!" == "" goto :home-questions-1
+      if "!new-user-questions-1!" == "back" exit
     )
 
     :home-question-2 (
@@ -105,7 +106,7 @@ set "if-or=n"
       set /p "new-answers-2="
 
       if "!new-user-questions-2!" == "" goto :home-questions-2
-      if "!new-user-questions-2!" == "!new-user-questions-1!" goto :home-questions-2
+      if "!new-user-questions-2!" == "back" exit
     )
 
     :home-question-3 (
@@ -115,8 +116,7 @@ set "if-or=n"
       set /p "new-answers-3="
 
       if "!new-user-questions-3!" == "" goto :home-questions-3
-      if "!new-user-questions-3!" == "!new-user-questions-1!" goto :home-questions-3
-      if "!new-user-questions-3!" == "!new-user-questions-2!" goto :home-questions-3
+      if "!new-user-questions-3!" == "back" exit
     )
 
   )
