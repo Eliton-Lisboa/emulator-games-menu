@@ -1,6 +1,6 @@
 setlocal enabledelayedexpansion & : [name, string]
-  set "new-value="
   set "questions="
+  set "item="
   set index=0
 
   call lib\split-string "%~2", ";", questions
@@ -9,13 +9,11 @@ setlocal enabledelayedexpansion & : [name, string]
 
   for %%x in (!questions!) do (
     set /a index+=1
-    set "new-value="
 
-    for /f "tokens=1,2 delims=:" %%a in (%%x) do (
-      set new-value=%%a=%%b
-    )
+    set item=%%x
+    set item=!item:~1,-1!
 
-    echo !new-value!>> "database\users\%~1\recovery-questions.txt"
+    echo !item!>> "database\users\%~1\recovery-questions.txt"
   )
 
 (

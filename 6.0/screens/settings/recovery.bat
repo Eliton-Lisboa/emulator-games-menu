@@ -13,7 +13,7 @@ set "user-recovery-questions-2-answer="
 set "user-recovery-questions-3-answer="
 
 set error-level=0
-set index=1
+set index=0
 set "result="
 set "answer="
 
@@ -22,13 +22,16 @@ set "answer="
 
   call database\get\recovery-questions "!user-name!", result
 
-  for /f "tokens=1,2,3,4,5,6 delims=^=" %%a in ("!result!") do (
-    set user-recovery-questions-1=%%a
-    set user-recovery-questions-1-answer=%%b
-    set user-recovery-questions-2=%%c
-    set user-recovery-questions-2-answer=%%d
-    set user-recovery-questions-3=%%e
-    set user-recovery-questions-3-answer=%%f
+  for /f "tokens=1,2,3 delims=;" %%a in ("!result!") do (
+
+    for %%x in (%%a %%b %%c) do (
+      set /a index+=1
+
+      for /f "tokens=1,2 delims=:" %%d in ("%%x") do (
+        set user-recovery-questions-!index!=%%d
+        set user-recovery-questions-!index!-answer=%%e
+      )
+    )
   )
 
   goto :home
@@ -39,7 +42,7 @@ set "answer="
   echo.
   call components\draw-title "Console Games Menu"
   echo.
-  call lib\draw-center-text "Type {&1&4}'back'{&0} to go back", 1
+  call lib\draw-center-text "Type '{&1&4}back{&0}' to go back", 1
   echo.
   echo.
 
@@ -87,7 +90,7 @@ set "answer="
     call components\type-password new-user-pass
 
     if "!new-user-pass!" == "back" exit
-    call database\lib\valid-new-password "!new-user-pass!", result
+    call database\update\pass !user-name!, "!new-user-pass!", result
 
     if "!result!" == "n" (
       set error-level=3
