@@ -21,12 +21,12 @@ set "result="
   call components\draw-title "Confirm password"
   echo.
   echo.
-  call lib\draw-center-text "Type {&1&4}'back'{&0} to go back", 1
+  call lib\draw-center-text "Type '{&1&4}back{&0}' to go back", 1
   echo.
 
   :home-type (
     call components\draw-input-errorlevel "Type your password", !error-level!
-    set /p "new-value="
+    call components\type-password new-value
 
     if "!new-value!" == "back" exit
 
