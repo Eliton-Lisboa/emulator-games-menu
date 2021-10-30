@@ -27,7 +27,6 @@ set "result-index="
   set "menu="
   set "menu-show="
 
-  goto :home
 )
 
 :home (
