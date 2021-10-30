@@ -1,7 +1,7 @@
 setlocal enabledelayedexpansion & : [&result]
   set "result="
 
-  for /f "tokens=*" %%x in ('dir /b "database\users\"') do (
+  for /f "tokens=*" %%x in ('dir /b "database\users"') do (
     set result=!result! "%%x"
   )
 
