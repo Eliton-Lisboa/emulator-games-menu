@@ -21,7 +21,6 @@ set error-level=0
     set menu-show=!menu-show! "!result!"
   )
 
-  goto :home
 )
 
 :home (
