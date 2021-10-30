@@ -40,14 +40,28 @@ set "index="
 
   @REM   if not exist "data\users\!user-name!" exit
   @REM )
-  @REM if "!result!" == "Change password" start /wait /shared screens\settings\change-password
+  if "!result!" == "Change password" (
+    start /wait /shared messages\confirm-pass !user-name!
+
+    set /p answer=< "temp\confirm-pass.txt"
+
+    if "!answer!" == "y" (
+      start /wait /shared screens\settings\change-password
+    )
+  )
   @REM if "!result!" == "Share locations" start /wait /shared screens\settings\share-locations
   if "!result!" == "Recovery account" start /wait /shared screens\settings\recovery
   if "!result!" == "Backup" start /wait /shared screens\settings\backup
   if "!result!" == "Delete account" (
-    start /wait /shared /min database\delete "!user-name!", result
+    start /wait /shared messages\confirm-pass !user-name!
 
-    if "!result!" == "y" exit /b 1
+    set /p answer=< "temp\confirm-pass.txt"
+
+    if "!answer!" == "y" (
+      start /wait /shared /min database\delete !user-name!, result
+
+      if "!result!" == "y" exit /b 1
+    )
   )
   if "!result!" == "Back" exit
 
