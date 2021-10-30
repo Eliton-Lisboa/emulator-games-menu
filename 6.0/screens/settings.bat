@@ -9,13 +9,15 @@ set "result="
 set "index="
 
 :ini (
-  set menu="Emulator location" "Roms location" "Change name" "Change password" "Share locations" "Recovery account" "Backup" "Delete account" "" "Back"
+  set menu="Emulator location" "Roms location" "Change password" "Change recovery questions" "Share locations" "Recovery account" "Backup" "Delete account" "" "Back"
   set "menu-show="
 
   for %%x in (!menu!) do (
     call lib\center-text %%x, result
     set menu-show=!menu-show! "!result!"
   )
+
+  echo ok> "temp\settings.txt"
 
   goto :home
 )
@@ -35,11 +37,6 @@ set "index="
 
   if "!result!" == "Emulator location" start /wait /shared screens\settings\change-emulator-location
   if "!result!" == "Roms location" start /wait /shared screens\settings\change-roms-location
-  @REM if "!result!" == "Change name" (
-  @REM   start /wait /shared screens\settings\change-name
-
-  @REM   if not exist "data\users\!user-name!" exit
-  @REM )
   if "!result!" == "Change password" (
     start /wait /shared messages\confirm-pass !user-name!
 
@@ -49,18 +46,15 @@ set "index="
       start /wait /shared screens\settings\change-password
     )
   )
-  @REM if "!result!" == "Share locations" start /wait /shared screens\settings\share-locations
+  if "!result!" == "Share locations" start /wait /shared screens\settings\share-locations
   if "!result!" == "Recovery account" start /wait /shared screens\settings\recovery
   if "!result!" == "Backup" start /wait /shared screens\settings\backup
   if "!result!" == "Delete account" (
-    start /wait /shared messages\confirm-pass !user-name!
+    call database\delete !user-name!, result
 
-    set /p answer=< "temp\confirm-pass.txt"
-
-    if "!answer!" == "y" (
-      start /wait /shared /min database\delete !user-name!, result
-
-      if "!result!" == "y" exit /b 1
+    if "!result!" == "y" (
+      echo exit> "temp\settings.txt"
+      exit
     )
   )
   if "!result!" == "Back" exit
