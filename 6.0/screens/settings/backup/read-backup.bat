@@ -2,21 +2,25 @@
 setlocal enabledelayedexpansion
 
 title !window-title! - Read backup
-mode !window-size-width!, 10
+mode !window-size-width!, 20
 color !window-color!
 
 set "menu="
 set "menu-show="
-set "tmp-menu="
 
 set "backup-user-name="
+set "backup-local="
+set "check-list="
 set "new-value="
-set "temp-new-value="
 set "if-or=n"
 set index=0
 set error-level=0
 
+set "prop-name="
+set "prop-value="
+
 set "result="
+set "result-index="
 
 :ini (
   set "menu="
@@ -50,18 +54,22 @@ set "result="
       set error-level=3
       goto :home-location
     ) else (
+      set backup-local=!new-value!
 
-      for /f "tokens=1,2 delims=^=" %%a in (!new-value!) do (
-        if "%%a" neq "user-name" if "%%a" neq "pass" (
-          set menu=!menu! "y"
+      for /f "usebackq tokens=1,2 delims=^=" %%a in ("!backup-local!") do (
 
+        if "%%a" == "user-name" (
+          set backup-user-name=%%b
+        ) else if "%%a" neq "pass" (
           set prop-name=%%a
           set prop-name=!prop-name:-= !
-          set prop-new-value=%%b
-          : problem: recovery-questions=Ok=kO;Lm=mL;Op=pO
+          set prop-value=%%b
 
-          set menu-show=!menu-show! " y - !prop-name!: !prop-new-value!"
+          set check-list=!check-list! y
+          set menu=!menu! "y"
+          set menu-show=!menu-show! " y - !prop-name!: !prop-value!"
         )
+
       )
 
       for %%x in ("" "Done" "Back") do (
@@ -82,6 +90,7 @@ set "result="
   cls
   echo.
   call components\draw-title "Select informations to save"
+  call lib\draw-center-text "Created by: {&1&3}!backup-user-name!{&0}", 1
   echo.
   call lib\draw-center-text "Type '{&1&4}back{&0}' to go back", 1
   echo.
@@ -89,81 +98,63 @@ set "result="
 
   cmdmenusel f880 !menu-show!
 
-  set item=!errorlevel!
-  call lib\get-array-vector menu, !errorlevel!, result
+  set result-index=!errorlevel!
+  call lib\get-array-vector menu, !result-index!, result
   set result=!result:~1,-1!
 
-  @REM if "!result!" == "Done" (
-  @REM   set index=0
+  if "!result!" == "Done" (
+    set index=0
 
-  @REM   for /f "tokens=1,2 delims=^=" %%a in (!new-value!) do (
-  @REM     if "%%a" neq "user-name" if "%%a" neq "pass" (
-  @REM       set /a index=!index! + 1
+    for /f "usebackq tokens=1,2 delims=^=" %%a in ("!backup-local!") do (
+      if "%%a" neq "user-name" if "%%a" neq "pass" (
+        set /a index+=1
+        call lib\get-array-vector check-list, !index!, result
 
-  @REM       call lib\get-array-vector menu, !index!, result
+        if "!result!" == "y" (
+          call database\update\%%a !user-name!, "%%b"
+        )
 
-  @REM       if !result! == "y" (
-  @REM         echo %%b> "data\users\!user-name!\%%a.txt"
-  @REM       )
-  @REM     )
-  @REM   )
+      )
+    )
 
-  @REM   exit
-  @REM ) else
-  if "!result!" == "Back" (
+    exit
+  ) else if "!result!" == "Back" (
     goto :ini
+  ) else if "!result!" neq "" (
+    set "new-value=n"
+
+    call lib\get-array-vector check-list, !result-index!, result
+
+    if "!result!" == "n" set "new-value=y"
+
+    call lib\change-array-index check-list, !result-index!, !new-value!, check-list
+
+    set "menu="
+    set "menu-show="
+    set index=0
+
+    for /f "usebackq tokens=1,2 delims=^=" %%a in ("!backup-local!") do (
+      if "%%a" neq "user-name" if "%%a" neq "pass" (
+        set /a index+=1
+
+        call lib\get-array-vector check-list, !index!, result
+
+        set prop-name=%%a
+        set prop-name=!prop-name:-= !
+        set prop-value=%%b
+
+        set menu=!menu! "!result!"
+        set menu-show=!menu-show! " !result! - !prop-name!: !prop-value!"
+      )
+    )
+
+    for %%x in ("" "Done" "Back") do (
+      set menu=!menu! %%x
+
+      call lib\center-text %%x, result
+      set menu-show=!menu-show! "!result!"
+    )
   )
-  @REM ) else if "!result!" neq "" (
-  @REM   set "tmp-menu="
-  @REM   set index=0
-
-  @REM   for %%x in (!menu!) do (
-  @REM     if %%x neq "" if %%x neq "Back" if %%x neq "Done" (
-
-  @REM       set /a index=!index! + 1
-
-  @REM       if !index! == !item! (
-  @REM         set "temp-new-value=y"
-
-  @REM         if %%x == "y" (
-  @REM           set "temp-new-value=n"
-  @REM         )
-
-  @REM         set tmp-menu=!tmp-menu! "!temp-new-value!"
-  @REM       ) else (
-  @REM         set tmp-menu=!tmp-menu! %%x
-  @REM       )
-
-  @REM     )
-  @REM   )
-
-  @REM   set menu=!tmp-menu!
-  @REM   set "menu-show="
-  @REM   set index=0
-
-  @REM   for /f "tokens=1,2 delims=^=" %%a in (!new-value!) do (
-  @REM     if "%%a" neq "user-name" if "%%a" neq "pass" (
-  @REM       set /a index=!index! + 1
-
-  @REM       call lib\get-array-vector menu, !index!, result
-
-  @REM       set prop-name=%%a
-  @REM       set prop-name=!prop-name:-= !
-  @REM       set prop-new-value=%%b
-
-  @REM       if "!prop-new-value:~-1,1!" == "\" set "prop-new-value=!prop-new-value!\"
-
-  @REM       set menu-show=!menu-show! " !result! - !prop-name!: !prop-new-value!"
-  @REM     )
-  @REM   )
-
-  @REM   for %%x in ("" "Done" "Back") do (
-  @REM     set menu=!menu! %%x
-
-  @REM     call lib\center-text %%x, result
-  @REM     set menu-show=!menu-show! "!result!"
-  @REM   )
-  @REM )
 
   goto :read
 )

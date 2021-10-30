@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion & : [local, &result in error level]
   set result-error-level=0
 
   if exist "!file-path!" (
-    start /wait /shared messages\confirm "The file already exists, do you want to replace it?"
+    start /wait /shared messages\confirm "The file already exists, do you wanna replace it?"
 
     set /p answer=< "temp\confirm.txt"
     if "!answer!" == "n" (
@@ -23,7 +23,7 @@ setlocal enabledelayedexpansion & : [local, &result in error level]
       set "prop-value=!prop-value!;%%y"
     )
 
-    echo !prop-name!^=!prop-value:~1!>> "!file-path!"
+    echo !prop-name!:!prop-value:~1!>> "!file-path!"
   )
 
   :end
