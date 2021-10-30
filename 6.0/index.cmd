@@ -1,3 +1,5 @@
+:: Microsoft Windows CMD.exe version 10.0.19043.1288 ::
+
 @echo off
 setlocal enabledelayedexpansion
 
