@@ -17,7 +17,7 @@ set index=0
 set "result="
 set "answer="
 
-:ini (
+(
   set index=0
 
   call database\get\recovery-questions "!user-name!", result
@@ -34,7 +34,6 @@ set "answer="
     )
   )
 
-  goto :home
 )
 
 :home (

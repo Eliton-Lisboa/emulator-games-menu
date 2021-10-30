@@ -22,13 +22,6 @@ set "prop-value="
 set "result="
 set "result-index="
 
-:ini (
-  set "menu="
-  set "menu-show="
-
-  goto :home
-)
-
 :home (
   cls
   echo.

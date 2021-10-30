@@ -10,7 +10,7 @@ set "menu-show="
 
 set "result="
 
-:ini (
+(
   set menu="Create backup" "Read backup" "" "Back"
   set "menu-show="
 
@@ -19,7 +19,6 @@ set "result="
     set menu-show=!menu-show! "!result!"
   )
 
-  goto :home
 )
 
 :home (

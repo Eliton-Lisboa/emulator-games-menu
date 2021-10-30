@@ -13,7 +13,7 @@ set "result="
 set "new-value="
 set error-level=0
 
-:ini (
+(
   set "menu="
   set "menu-show="
 
@@ -25,7 +25,6 @@ set error-level=0
     set menu-show=!menu-show! "!result!"
   )
 
-  goto :home
 )
 
 :home (

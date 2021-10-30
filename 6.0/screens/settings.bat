@@ -8,7 +8,7 @@ color !window-color!
 set "result="
 set "index="
 
-:ini (
+(
   set menu="Emulator location" "Roms location" "Change password" "Change recovery questions" "Share locations" "Recovery account" "Backup" "Delete account" "" "Back"
   set "menu-show="
 
@@ -19,7 +19,6 @@ set "index="
 
   echo ok> "temp\settings.txt"
 
-  goto :home
 )
 
 :home (

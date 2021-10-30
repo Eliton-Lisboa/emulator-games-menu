@@ -17,7 +17,7 @@ set "result="
 set result-index=0
 set "item="
 
-:ini (
+(
   for /f "tokens=*" %%x in ('dir /b "database\users\!user-name!" ^| findstr "location"') do (
     set item=%%x
 
@@ -49,7 +49,6 @@ set "item="
     set menu-show=!menu-show! "!result!"
   )
 
-  goto :home
 )
 
 :home (

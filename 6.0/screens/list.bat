@@ -10,7 +10,7 @@ set "menu-show="
 set "result="
 set "folder="
 
-:ini (
+(
   call database\get\emulator-location "!user-name!", user-emulator-location
   call database\get\roms-location "!user-name!", user-roms-location
   call database\get\roms-location "!user-name!", folder
@@ -30,7 +30,6 @@ set "folder="
     if "!user-roms-location!" == "" exit
   )
 
-  goto :reload
 )
 
 :reload (
@@ -77,7 +76,6 @@ set "folder="
     set menu-show=!menu-show! "!result!"
   )
 
-  goto :home
 )
 
 :home (
@@ -104,7 +102,7 @@ set "folder="
   if "!result!" == "Go back" (
     call lib\go-back-folder "!folder!", folder
     goto :reload
-  )
+  ) 
   if "!result!" == "Back" screens\welcome
   if "!result!" == "Exit" exit
   if "!result!" neq "" (

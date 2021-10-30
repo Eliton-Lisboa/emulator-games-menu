@@ -7,7 +7,7 @@ set "menu-show="
 
 set "result="
 
-:ini (
+(
   set menu="Login" "Register" "Read backup" "" "Exit"
   set "menu-show="
 
@@ -16,7 +16,6 @@ set "result="
     set menu-show=!menu-show! "!result!"
   )
 
-  goto :home
 )
 
 :home (
