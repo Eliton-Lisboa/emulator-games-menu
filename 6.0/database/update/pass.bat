@@ -15,6 +15,6 @@ setlocal enabledelayedexpansion & : [name, new pass, &result]
   :end
 (
   endlocal
-  set "%~1=%result%"
+  set "%~3=%result%"
   exit /b 0
 )
