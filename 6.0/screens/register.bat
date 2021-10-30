@@ -122,7 +122,7 @@ set "if-or=n"
   )
 
   call database\add "!new-user-name!", "!new-user-pass!"
-  call database\update\questions "!new-user-name!", "!new-user-questions-1!", "!new-answers-1!", "!new-user-questions-2!", "!new-answers-2!", "!new-user-questions-3!", "!new-answers-3!"
+  call database\update\recovery-questions "!new-user-name!", "!new-user-questions-1!:!new-answers-1!;!new-user-questions-2!:!new-answers-2!;!new-user-questions-3!:!new-answers-3!"
 
   set "user-name=!new-user-name!"
   set "user-pass=!new-user-pass!"
