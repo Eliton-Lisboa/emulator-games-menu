@@ -96,7 +96,9 @@ set "folder="
   if "!result!" == "Settings" (
     start /wait /shared screens\settings
 
-    if !errorlevel! == 1 exit
+    set /p answer=< "temp\settings.txt"
+    if "!answer!" == "exit" exit
+
     goto :reload
   )
   if "!result!" == "Go back" (
