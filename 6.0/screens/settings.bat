@@ -9,7 +9,7 @@ set "result="
 set "index="
 
 (
-  set menu="Emulator location" "Roms location" "Change password" "Change recovery questions" "Share locations" "Recovery account" "Backup" "Delete account" "" "Back"
+  set menu="Emulator location" "Roms location" "Change password" "Change recovery questions" "Games not accepted" "Share locations" "Recovery account" "Backup" "Delete account" "" "Back"
   set "menu-show="
 
   for %%x in (!menu!) do (
@@ -54,11 +54,20 @@ set "index="
       start /wait /shared screens\settings\change-recovery-questions
     )
   )
+  if "!result!" == "Games not accepted" (
+    start /wait /shared messages\confirm-pass !user-name!
+
+    set /p answer=< "temp\confirm-pass.txt"
+
+    if "!answer!" == "y" (
+      start /wait /shared screens\settings\change-games-not-accepted
+    )
+  )
   if "!result!" == "Share locations" start /wait /shared screens\settings\share-locations
   if "!result!" == "Recovery account" start /wait /shared screens\settings\recovery
   if "!result!" == "Backup" start /wait /shared screens\settings\backup
   if "!result!" == "Delete account" (
-    call database\delete !user-name!, result
+    call database\delete\user !user-name!, result
 
     if "!result!" == "y" (
       echo exit> "temp\settings.txt"
