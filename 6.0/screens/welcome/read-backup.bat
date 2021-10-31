@@ -58,7 +58,7 @@ set "result-index="
         set error-level=3
         goto :home-location
       ) else (
-        call database\read-backup-new-user "!backup-local!"
+        call database\backup\read-new-user "!backup-local!"
         exit
       )
 
