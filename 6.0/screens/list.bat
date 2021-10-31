@@ -47,11 +47,16 @@ set "folder="
 
   for /f "tokens=*" %%x in ('dir /b "!folder!"') do (
     if not exist "!folder!\%%x\*" (
-      set menu=!menu! "%%x"
-
       call lib\remove-extenssion "%%x", result
-      call lib\center-text "!result!", result
-      set menu-show=!menu-show! "!result!"
+      call database\valid\game-not-accepted "!user-name!", "!result!", result
+
+      if "!result!" == "n" (
+        set menu=!menu! "%%x"
+
+        call lib\remove-extenssion "%%x", result
+        call lib\center-text "!result!", result
+        set menu-show=!menu-show! "!result!"
+      )
     )
   )
 
