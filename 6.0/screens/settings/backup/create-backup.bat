@@ -35,7 +35,7 @@ set error-level=0
     set error-level=0
   )
 
-  call database\create-backup "!new-value!", result
+  call database\backup\create "!new-value!", result
 
   if !result! neq 0 (
     set error-level=!result!
