@@ -42,6 +42,8 @@ set error-level=0
   call lib\get-array-vector menu, !errorlevel!, result
   set result=!result:~1,-1!
 
+  echo.
+
   :home-type
   if "!result!" == "Back" (
     exit

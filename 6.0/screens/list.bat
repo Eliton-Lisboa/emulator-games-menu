@@ -10,7 +10,7 @@ set "menu-show="
 set "result="
 set "folder="
 
-(
+:ini (
   call database\get\emulator-location "!user-name!", user-emulator-location
   call database\get\roms-location "!user-name!", user-roms-location
   call database\get\roms-location "!user-name!", folder
@@ -102,7 +102,7 @@ set "folder="
     set /p answer=< "temp\settings.txt"
     if "!answer!" == "exit" exit
 
-    goto :reload
+    goto :ini
   )
   if "!result!" == "Go back" (
     call lib\go-back-folder "!folder!", folder
@@ -120,5 +120,5 @@ set "folder="
 
   )
 
-  goto :reload
+  goto :home
 )
