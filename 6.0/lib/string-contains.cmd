@@ -5,8 +5,8 @@ setlocal enabledelayedexpansion & : [string, item, &result]
   set string-length=0
   set item-length=0
 
-  call lib\string-length "!string!", string-length
-  call lib\string-length "%~2", item-length
+  call "%~dp0\string-length" "!string!", string-length
+  call "%~dp0\string-length" "%~2", item-length
 
   for /l %%x in (0, 1, !string-length!) do (
     set item=!string:~%%x,%item-length%!
