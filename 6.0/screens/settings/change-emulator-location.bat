@@ -43,23 +43,19 @@ set "new-value="
 
   echo.
 
-  :home-type
+  :home-select
   if "!result!" == "Back" (
     exit
   ) else if "!result!" == "New location" (
-    start /wait /shared lib\file-selector "C:\Users", "y", "file", ".exe", "Select new roms location"
+    start /wait /shared lib\file-selector "\Users", "y", "file", ".exe", "Select new emulator location"
     set /p new-value=< "temp\file-selector.txt"
 
     if "!new-value!" == "exit" exit
 
-    if exist "!new-value!\*" (
-      call database\update\locations "!user-name!", "emulator", "!new-value!"
-      set user-emulator-location=!new-value!
+    call database\update\locations "!user-name!", "emulator", "!new-value!"
+    set user-emulator-location=!new-value!
 
-      exit
-    )
-
-    goto :home-type
+    exit
   ) else if "!result!" neq "" (
     call database\update\locations "!user-name!", "emulator", "!result!"
     set user-emulator-location=!result!

@@ -43,11 +43,11 @@ set "new-value="
 
   echo.
 
-  :home-type
+  :home-select
   if "!result!" == "Back" (
     exit
   ) else if "!result!" == "New location" (
-    start /wait /shared lib\file-selector "!user-roms-location!", "y", "folder", "", "Select new roms location"
+    start /wait /shared lib\file-selector "\Users", "y", "folder", "", "Select new roms location"
     set /p new-value=< "temp\file-selector.txt"
 
     if "!new-value!" == "exit" exit
@@ -57,9 +57,10 @@ set "new-value="
       set user-roms-location=!new-value!
 
       exit
+    ) else (
+      goto :home-select
     )
 
-    goto :home-type
   ) else if "!result!" neq "" (
     call database\update\locations "!user-name!", "roms", "!result!"
     set user-roms-location=!result!

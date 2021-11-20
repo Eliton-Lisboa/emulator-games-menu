@@ -179,6 +179,9 @@ set "params-accepted-extenssions="
     exit
   ) else if "!result!" == "Back" (
     call !config-libs-path!\go-back-folder "!params-root-folder!", result
+
+    if "!result!" == "" set "result=\"
+
     set params-root-folder=!result!
 
     goto :reload
