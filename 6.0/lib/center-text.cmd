@@ -8,9 +8,7 @@ setlocal enabledelayedexpansion & : [text, &result]
 	call "%~dp0\string-length" "%~1", length
 	call config\get-configfile-prop "window-size-width", window-width
 
-	if "!window-width!" == "no file" (
-		call "%~dp0\screen-size" window-width, _
-	)
+	if "!window-width!" == "no file" set window-width=!window-size-width!
 
 	set /a space_add=!window-width! / 2
 	set /a space_add=!space_add! - (!length! / 2)
