@@ -1,15 +1,22 @@
 setlocal enabledelayedexpansion & : [text, &result]
-	set add=0
+	set space_add=0
 	set length=0
 	set "result="
+	set window-width=0
+	set "if-or=n"
 
-	call lib\string-length "%~1", length
+	call "%~dp0\string-length" "%~1", length
+	call config\get-configfile-prop "window-size-width", window-width
 
-	set /a add=!window-size-width! / 2
-	set /a add=!add! - !length! / 2
-	set /a add=!add! - 2
+	if "!window-width!" == "no file" (
+		call "%~dp0\screen-size" window-width, _
+	)
 
-	for /l %%z in (0, 1, !add!) do (
+	set /a space_add=!window-width! / 2
+	set /a space_add=!space_add! - (!length! / 2)
+	set /a space_add=!space_add! - 2
+
+	for /l %%# in (0, 1, !space_add!) do (
 		set "result=!result! "
 	)
 

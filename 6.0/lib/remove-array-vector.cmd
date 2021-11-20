@@ -5,7 +5,6 @@ setlocal enabledelayedexpansion & : [array : ref, item, &result]
     if %%x neq %2 set result=!result! %%x
   )
 
-
 (
 	endlocal
 	set "%~3=%result%"
