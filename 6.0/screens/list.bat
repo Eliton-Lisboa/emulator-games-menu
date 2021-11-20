@@ -114,6 +114,7 @@ set "folder="
 
     if "!result:~-1,1!" == "\" (
       set "folder=!folder!\!result:~0,-2!"
+      goto :reload
     ) else (
       !user-emulator-location! "!folder!\!result!"
     )
