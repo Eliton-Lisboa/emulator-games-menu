@@ -1,9 +1,9 @@
 setlocal enabledelayedexpansion & : [name]
 
-	if exist "lib\drawings\%~1.txt" (
+	if exist "%~dp0\drawings\%~1.txt" (
 		echo.
 
-		for /f "usebackq tokens=*" %%x in ("lib\drawings\%~1.txt") do (
+		for /f "usebackq tokens=*" %%x in ("%~dp0\drawings\%~1.txt") do (
 			set value=%%x
 
 			set value=!value:^&0=%window-color%!
@@ -20,7 +20,7 @@ setlocal enabledelayedexpansion & : [name]
 
 		cecho {!window-color!}
 	) else (
-		call lib\draw-center-text "{&1&3}Draw not found", 1
+		call "%~dp0\draw-center-text" "{&1&3}Draw not found", 1
 	)
 
 (

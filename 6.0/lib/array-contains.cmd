@@ -10,4 +10,3 @@ setlocal enabledelayedexpansion & : [array, item, &result]
   set "%~3=%result%"
   exit /b 0
 )
-

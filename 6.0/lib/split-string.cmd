@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion & : [string, split char, &result]
   set length=0
   set index=0
 
-  call lib\string-length "%~1", length
+  call "%~dp0\string-length" "%~1", length
   set result="
 
   for /l %%x in (0, 1, !length!) do (

@@ -9,14 +9,14 @@ setlocal enabledelayedexpansion & : [text, change colors count]
 	set result=!result:^&4=%window-color-warn%!
 	set result=!result:^&5=%window-color-success%!
 
-	call lib\center-text "!result!", result
+	call "%~dp0\center-text" "!result!", result
 	set /a add=%~2 * 3 + 3
 
 	for /l %%z in (0, 1, %add%) do (
 		set "result= !result!"
 	)
 
-  cecho !result! {!window-color!} & echo.
+	cecho !result! {!window-color!} & echo.
 
 (
 	endlocal
