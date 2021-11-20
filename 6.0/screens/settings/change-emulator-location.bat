@@ -47,7 +47,7 @@ set "new-value="
   if "!result!" == "Back" (
     exit
   ) else if "!result!" == "New location" (
-    start /wait /shared lib\file-selector "C:\Users", "y", "file", ".exe"
+    start /wait /shared lib\file-selector "C:\Users", "y", "file", ".exe", "Select new roms location"
     set /p new-value=< "temp\file-selector.txt"
 
     if "!new-value!" == "exit" exit

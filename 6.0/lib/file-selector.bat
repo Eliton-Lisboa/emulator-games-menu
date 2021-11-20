@@ -9,7 +9,8 @@ mode 60,30
 :   root folder,
 :   back to the root folder: y or n,
 :   folder or file,
-:   accepted extenssions: .jpg;.png
+:   accepted extenssions: .jpg;.png,
+:   title: string
 : ]
 
 set "menu="
@@ -149,7 +150,7 @@ set "params-accepted-extenssions="
 
   )
 
-  set /a size=!size! + 6
+  set /a size=!size! + 8
 
   if !size! lss 30 (
     mode 60,30
@@ -162,6 +163,8 @@ set "params-accepted-extenssions="
   cls
   echo.
   call !config-components-path!\draw-title "File Selector"
+  call !config-libs-path!\draw-center-text "{0f}%~5", 1
+  echo.
   call !config-libs-path!\draw-center-text "{0f}!params-root-folder!", 1
   echo.
   echo.
