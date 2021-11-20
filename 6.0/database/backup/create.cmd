@@ -2,16 +2,6 @@ setlocal enabledelayedexpansion & : [local, &result in error level]
   set "file-path=%~1\console-games-menu-!user-name!.backup.ini"
   set result-error-level=0
 
-  if exist "!file-path!" (
-    start /wait /shared messages\confirm "The file already exists, do you wanna replace it?"
-
-    set /p answer=< "temp\confirm.txt"
-    if "!answer!" == "n" (
-      set result-error-level=2
-      goto :end
-    )
-  )
-
   echo user-name^=!user-name!> "!file-path!"
 
   for /f "tokens=*" %%x in ('dir /b "database\users\!user-name!\"') do (
