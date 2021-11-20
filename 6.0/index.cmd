@@ -21,6 +21,9 @@ set "window-color-error=c"
 set "window-color-warn=6"
 set "window-color-success=2"
 
+set "window-libs-path=lib\"
+set "window-components-path=components\"
+
 title !window-title!
 mode !window-size!
 color !window-color!
