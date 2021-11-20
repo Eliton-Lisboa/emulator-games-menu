@@ -33,7 +33,7 @@ set "result="
 
   if "!result!" == "Register" screens\register
   if "!result!" == "Login" screens\login
-  if "!result!" == "Read backup" start /wait /shared screens\welcome\read-backup
+  if "!result!" == "Read backup" call screens\welcome\read-backup
   if "!result!" == "Exit" exit
 
   goto :home

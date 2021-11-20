@@ -14,7 +14,6 @@ set "check-list="
 set "new-value="
 set "if-or=n"
 set index=0
-set error-level=0
 
 set "prop-name="
 set "prop-value="
@@ -26,7 +25,6 @@ set "result-index="
 :ini (
   set "menu="
   set "menu-show="
-
 )
 
 :home (
@@ -39,21 +37,12 @@ set "result-index="
   echo.
 
   :home-location (
-    call components\draw-input-errorlevel "Type the locations", !error-level!
-    set /p "new-value="
+    start /wait /shared lib\file-selector "C:\Users", "y", "file", ".backup.ini"
+    set /p new-value=< "temp\file-selector.txt"
 
-    if "!new-value!" == "back" screens\settings\backup
+    if "!new-value!" == "exit" exit
 
-    set new-value=!new-value:"=!
-    set "if-or=n"
-
-    if not exist "!new-value!" set "if-or=y"
-    if "!new-value:~-11!" neq ".backup.ini" set "if-or=y"
-
-    if "!if-or!" == "y" (
-      set error-level=3
-      goto :home-location
-    ) else (
+    if exist "!new-value!" (
       set backup-local=!new-value!
 
       for /f "usebackq tokens=1,2 delims=^=" %%a in ("!backup-local!") do (
@@ -82,6 +71,7 @@ set "result-index="
       goto :read
     )
 
+    goto :home-location
   )
 
 )

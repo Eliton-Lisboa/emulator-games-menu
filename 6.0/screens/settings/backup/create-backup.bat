@@ -5,10 +5,10 @@ title !window-title! - Create backup
 mode !window-size-width!, 10
 color !window-color!
 
-set "new-value="
+set "answer="
 
 set "result="
-set error-level=0
+set "new-value="
 
 :home (
   cls
@@ -20,19 +20,19 @@ set error-level=0
   echo.
 
   :home-location (
-    call components\draw-input-errorlevel "Type the locations", !error-level!
-    set /p "new-value="
+    start /wait /shared lib\file-selector "C:\Users", "y", "folder", ""
+    set /p new-value=< "temp\file-selector.txt"
 
-    if "!new-value!" == "back" screens\settings\backup
+    if "!new-value!" == "exit" screens\settings\backup
 
-    set new-value=!new-value:"=!
+    if exist "!new-value!\*" (
+      start /wait /shared messages\confirm "The file already exists, do you wanna replace it?"
+      set /p answer=< "temp\confirm.txt"
 
-    if not exist "!new-value!\*" (
-      set error-level=3
+      if "!answer!" == "n" goto :home-location
+    ) else (
       goto :home-location
     )
-
-    set error-level=0
   )
 
   call database\backup\create "!new-value!", result
