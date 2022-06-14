@@ -7,7 +7,32 @@ setlocal enabledelayedexpansion
 
 :reload
 (
-    >"%temp%/windowsize.303" echo 9
+    ::  language
+    set /p language=<"\Users\%username%\.menuemulator\language.303"
+    if not exist ".language\!language!\" (
+        >"msg.vbs" echo MsgBox "Error: the selected language '!language!' does not exist                         the default language will be changed to english", 0+16+0+4096, "Error"
+        msg.vbs
+        del /s /q /f msg.vbs
+        >"\Users\%username%\.menuemulator\language.303" echo en
+        set "language=en"
+    )
+
+    set /p MainHeader=<".language\!language!\mainheader.303"
+    set /p SettingsHeader=<".language\!language!\settingsheader.303"
+    set /p RomsLocationHeader=<".language\!language!\romslocationheader.303"
+    set /p DoNotTypeQuotes=<".language\!language!\donottypequotes.303"
+    set /p EnterToComeBack=<".language\!language!\entertocomeback.303"
+    set /p EmulatorLocationHeader=<".language\!language!\emulatorlocationheader.303"
+    set /p CloseOnCloseGameHeader=<".language\!language!\closeonclosegameheader.303"
+    set /p CmdMenuSelSettings=<".language\!language!\menus\cmdmenuselsettings.303"
+    set /p MainCmdMenuSelSettings=<".language\!language!\menus\maincmdmenuselsettings.303"
+    set /p CmdMenuSelCloseOnCloseGame=<".language\!language!\menus\cmdmenuselcloseonclosegame.303"
+    set /p EnterRomsLocation=<".language\!language!\enter\romslocation.303"
+    set /p EnterEmulatorLocation=<".language\!language!\enter\emulatorlocation.303"
+    set /p SelectLanguageHeader=<".language\!language!\selectlanguageheader.303"
+
+    ::  files
+    >"%temp%\windowsize.303" echo 9
     set gamelist=
     set "menugamelist=cmdmenusel f880"
     set normalgamelist=
@@ -21,11 +46,11 @@ setlocal enabledelayedexpansion
 
     echo. >"%temp%\tmpgame.303"
     dir /b "!romslocation:~1,-1!" >>"%temp%\tmpgame.303"
+
 )
 
 ::  -------- Home
 :home
-cls
 
 for /f "usebackq tokens=* skip=1" %%x in ("%temp%\tmpgame.303") do (
 
@@ -41,8 +66,9 @@ for /f "usebackq tokens=* skip=1" %%x in ("%temp%\tmpgame.303") do (
 
 )
 
+cls
 echo.
-".\cecho" {06}         --- &&".\cecho" {0f}Super nintendo&&".\cecho" {06} - &&".\cecho" {0f}All Saved Games&&".\cecho"  {06} ---&&echo.
+!MainHeader!&&echo.
 echo.
 echo.
 echo.
@@ -52,14 +78,14 @@ for %%y in (%gamelist%) do (
 
 set menugamelist=!menugamelist! "   !game:~1,-1!"
 )
-set menugamelist=!menugamelist! " " "                          Settings"
+set menugamelist=!menugamelist! !MainCmdMenuSelSettings!
 set /a listlines=!listlines! + 2
 !menugamelist!
 
 set /a selectedlistitem=%errorlevel% + 1
 set /a selectedminusone=!selectedlistitem! - 1
 set game=
-for /f "usebackq tokens=* skip=%selectedminusone%" %%z in ("%temp%/tmpgame.303") do (
+for /f "usebackq tokens=* skip=%selectedminusone%" %%z in ("%temp%\tmpgame.303") do (
         
     if "!game!" == "" (
         set line=%%z
@@ -88,22 +114,20 @@ mode 60,20
 cls
 
 echo.
-".\cecho" {06}                   --- &&".\cecho" {0f}Menu settings&&".\cecho" {06} ---&&echo.
+!SettingsHeader!&&echo.
 echo.
 echo.
 echo.
-"./cmdmenusel" f880 "                       Roms Location" "                     Emulator Location" "                   Closes when game ends" " " "                         Come back"
+!CmdMenuSelSettings!
 
 if "%errorlevel%" == "1" (
     cls
 
     echo.
-    ".\cecho" {06}       --- &&".\cecho" {0f}Enter your new location for your roms&&".\cecho" {06} ---&&echo.
-    ".\cecho" {06}                       [&&".\cecho" {0f}\.&&".\cecho" {06}]&&".\cecho" {0f} Come back&&echo.
+    !RomsLocationHeader!&&echo.
+    !EnterToComeBack!&&echo.
     echo.
-    ".\cecho" {04}            --- Write without double quotes ---&&echo.
-    echo.
-    echo.
+    !DoNotTypeQuotes!&&echo.
     echo.
     echo.
     echo.
@@ -111,7 +135,10 @@ if "%errorlevel%" == "1" (
     echo.
     echo.
     echo.
-    ".\cecho" {0f}Enter location ~&&".\cecho" {06}^> &&".\cecho" {0f}&& set /p "newromslocation="
+    echo.
+    echo.
+    !EnterRomsLocation!
+    set /p "newromslocation="
     
     if "!newromslocation!" neq "\." (
         md "\Users\%username%\.menuemulator"
@@ -124,12 +151,10 @@ if "%errorlevel%" == "2" (
     cls
 
     echo.
-    ".\cecho" {06}     --- &&".\cecho" {0f}Enter your new location for your emulator&&".\cecho" {06} ---&&echo.
-    ".\cecho" {06}                       [&&".\cecho" {0f}\.&&".\cecho" {06}]&&".\cecho" {0f} Come back&&echo.
+    !EmulatorLocationHeader!&&echo.
+    !EnterToComeBack!&&echo.
     echo.
-    ".\cecho" {04}            --- Write without double quotes ---&&echo.
-    echo.
-    echo.
+    !DoNotTypeQuotes!&&echo.
     echo.
     echo.
     echo.
@@ -137,7 +162,10 @@ if "%errorlevel%" == "2" (
     echo.
     echo.
     echo.
-    ".\cecho" {0f}Enter location ~&&".\cecho" {06}^> &&".\cecho" {0f}&& set /p "newemulatorlocation="
+    echo.
+    echo.
+    !EnterEmulatorLocation!
+    set /p "newemulatorlocation="
     
     if "!newemulatorlocation!" neq "\." (
         md "\Users\%username%\.menuemulator"
@@ -147,10 +175,10 @@ if "%errorlevel%" == "2" (
     goto :settings
 )
 if "%errorlevel%" == "3" (
-        cls
+    cls
 
     echo.
-    ".\cecho" {06}                  --- &&".\cecho" {0f}Enter an option&&".\cecho" {06} ---&&echo.
+    !CloseOnCloseGameHeader!&&echo.
     echo.
     echo.
     echo.
@@ -161,7 +189,7 @@ if "%errorlevel%" == "3" (
     echo.
     echo.
     echo.
-    ".\cmdmenusel" f880 "                            Yes" "                            No" " " "                         Come back"
+    !CmdMenuSelCloseOnCloseGame!
 
     if "!errorlevel!" == "1" (
         md "\Users\%username%\.menuemulator"
@@ -181,8 +209,60 @@ if "%errorlevel%" == "3" (
     goto :settings
 )
 if "%errorlevel%" == "4" (
-    goto :reload
+    set /a languageslistlines=0
+    set normallanguagelist=
+    set "languageslist=cmdmenusel f880"
+    dir /b ".language\" >"%temp%\tmplanguages.303"
+    >"%temp%\languagewindowsize.303" echo 9
+
+    for /f "usebackq tokens=*" %%x in ("%temp%\tmplanguages.303") do (
+        set language=%%x
+
+        set languageslist=!languageslist! "   !language!"
+        set /a languageslistlines=!languageslistlines! + 1
+        set normallanguagelist=!normallanguagelist! "!language!"
+    )
+    set languageslist=!languageslist! " " "                         Come Back"
+    set /a languageslistlines=!languageslistlines! + 2
+
+    cls
+    echo.
+    !SelectLanguageHeader!&&echo.
+    echo.
+    echo.
+    echo.
+    !languageslist!
+    set /a langselectedlistitem=!errorlevel!
+    set /a langlastlistitemminusone=!languageslistlines! - 1
+
+    if "!langselectedlistitem!" == "!langlastlistitemminusone!" (
+        goto :settings
+    )
+    if "!langselectedlistitem!" == "!languageslistlines!" (
+        goto :settings
+    )
+
+    set selectedlanguage=
+    set /a line=0
+    set /a langselectedlistitemminusone=!langselectedlistitem! - 1
+    for %%x in (!normallanguagelist!) do (
+
+        if "!selectedlanguage!" == "" (
+
+            if "!line!" == "!langselectedlistitemminusone!" (
+                set selectedlanguage=%%x
+            )
+        )
+        set /a line=!line! + 1
+    )
+
+    >"\Users\%username%\.menuemulator\language.303" echo !selectedlanguage:~1,-1!
+    goto :settings
+
 )
 if "%errorlevel%" == "5" (
+    goto :reload
+)
+if "%errorlevel%" == "6" (
     goto :reload
 )
