@@ -17,6 +17,8 @@ setlocal enabledelayedexpansion
         set "language=en"
     )
 
+    set /p MainTitle=<".language\!language!\maintitle.303"
+    set /p MainChcp=<".language\!language!\mainchcp.303"
     set /p MainHeader=<".language\!language!\mainheader.303"
     set /p SettingsHeader=<".language\!language!\settingsheader.303"
     set /p RomsLocationHeader=<".language\!language!\romslocationheader.303"
@@ -30,41 +32,40 @@ setlocal enabledelayedexpansion
     set /p EnterRomsLocation=<".language\!language!\enter\romslocation.303"
     set /p EnterEmulatorLocation=<".language\!language!\enter\emulatorlocation.303"
     set /p SelectLanguageHeader=<".language\!language!\selectlanguageheader.303"
+    set /p SelectLanguageSelected=<".language\!language!\selectlanguageselected.303"
+    set /p CmdMenuSelComeBackButton=<".language\!language!\menus\cmdmenuselcomebackbutton.303"
+    title !MainTitle!
+    chcp !MainChcp! >nul
 
     ::  files
-    >"%temp%\windowsize.303" echo 9
-    set gamelist=
-    set "menugamelist=cmdmenusel f880"
     set normalgamelist=
-    set /a listlines=1
+    set "menugamelist=cmdmenusel f880"
+    set /a gamelistlines=0
     set /p emulatorlocation=<"\Users\%username%\.menuemulator\emulatorlocation.303"
     set /p romslocation=<"\Users\%username%\.menuemulator\romslocation.303"
     set /p gobackonfinishgame=<"\Users\%username%\.menuemulator\gobackonfinishgame.303"
+    >"%temp%\windowsize.303" echo 9
 
     if "!romslocation!" == "" ( goto :settings )
     if "!emulatorlocation!" == "" ( goto :settings )
 
-    echo. >"%temp%\tmpgame.303"
-    dir /b "!romslocation:~1,-1!" >>"%temp%\tmpgame.303"
+    dir /b "!romslocation:~1,-1!" >"%temp%\tmpgame.303"
+    for /f "usebackq tokens=*" %%x in ("%temp%\tmpgame.303") do (
+        set game=%%x
+        set normalgamelist=!normalgamelist! "!game!"
+        set menugamelist=!menugamelist! "   !game:~0,-4!"
+        set /a gamelistlines=!gamelistlines! + 1
+
+        set /p line=<"%temp%\windowsize.303"
+        mode 60,!line!
+        set /a addednewline=!line! + 1
+        >"%temp%/windowsize.303" echo !addednewline!
+    )
 
 )
 
 ::  -------- Home
 :home
-
-for /f "usebackq tokens=* skip=1" %%x in ("%temp%\tmpgame.303") do (
-
-    set game=%%x
-    set gamelist=!gamelist! "!game:~0,-4!"
-    set normalgamelist=!normalgamelist! "!game!"
-    set /a listlines=!listlines! + 1
-
-    set /p line=<"%temp%\windowsize.303"
-    mode 60,!line!
-    set /a addednewline=!line! + 1
-    >"%temp%/windowsize.303" echo !addednewline!
-
-)
 
 cls
 echo.
@@ -73,37 +74,36 @@ echo.
 echo.
 echo.
 
-for %%y in (%gamelist%) do (
-    set game=%%y
-
-set menugamelist=!menugamelist! "   !game:~1,-1!"
-)
 set menugamelist=!menugamelist! !MainCmdMenuSelSettings!
-set /a listlines=!listlines! + 2
+set /a gamelistlines=!gamelistlines! + 2
 !menugamelist!
 
-set /a selectedlistitem=%errorlevel% + 1
+set /a selectedlistitem=%errorlevel%
 set /a selectedminusone=!selectedlistitem! - 1
 set game=
-for /f "usebackq tokens=* skip=%selectedminusone%" %%z in ("%temp%\tmpgame.303") do (
-        
+set /a line=0
+for %%x in (!normalgamelist!) do (
+
     if "!game!" == "" (
-        set line=%%z
-        set game=!line!
+        if "!line!" == "!selectedminusone!" (
+            set gameline=%%x
+            set game=!gameline!
+        )
     )
+    set /a line=!line! + 1
 )
 
-set /a lastlistitemminusone=!listlines! - 1
-if "!selectedlistitem!" == "!listlines!" (
+set /a lastlistitemminusone=!gamelistlines! - 1
+if "!selectedlistitem!" == "!gamelistlines!" (
     goto :settings
 )
 if "!selectedlistitem!" == "!lastlistitemminusone!" (
     goto :settings
 )
 
-"!emulatorlocation:~1,-1!" "!game!"
-del /s /q /f "stdout.txt"
-del /s /q /f "stderr.txt"
+"!emulatorlocation:~1,-1!" "!game:~1,-1!"
+if exist "stdout.txt" ( del /s /q /f "stdout.txt" >nul )
+if exist "stderr.txt" ( del /s /q /f "stderr.txt" >nul )
 if "!gobackonfinishgame!" == "true" ( goto :reload )
 
 exit
@@ -115,7 +115,7 @@ cls
 
 echo.
 !SettingsHeader!&&echo.
-echo.
+".\cecho" {08} 4.0
 echo.
 echo.
 !CmdMenuSelSettings!
@@ -216,40 +216,40 @@ if "%errorlevel%" == "4" (
     >"%temp%\languagewindowsize.303" echo 9
 
     for /f "usebackq tokens=*" %%x in ("%temp%\tmplanguages.303") do (
-        set language=%%x
+        set langlanguage=%%x
 
-        set languageslist=!languageslist! "   !language!"
+        set languageslist=!languageslist! "   !langlanguage!"
         set /a languageslistlines=!languageslistlines! + 1
-        set normallanguagelist=!normallanguagelist! "!language!"
+        set normallanguagelist=!normallanguagelist! "!langlanguage!"
     )
-    set languageslist=!languageslist! " " "                         Come Back"
+    set languageslist=!languageslist! !CmdMenuSelComeBackButton!
     set /a languageslistlines=!languageslistlines! + 2
 
     cls
     echo.
     !SelectLanguageHeader!&&echo.
-    echo.
+    !SelectLanguageSelected!&& echo !language! &&echo.
     echo.
     echo.
     !languageslist!
-    set /a langselectedlistitem=!errorlevel!
+    set /a selectedlistitem=!errorlevel!
     set /a langlastlistitemminusone=!languageslistlines! - 1
 
-    if "!langselectedlistitem!" == "!langlastlistitemminusone!" (
+    if "!selectedlistitem!" == "!langlastlistitemminusone!" (
         goto :settings
     )
-    if "!langselectedlistitem!" == "!languageslistlines!" (
+    if "!selectedlistitem!" == "!languageslistlines!" (
         goto :settings
     )
 
     set selectedlanguage=
     set /a line=0
-    set /a langselectedlistitemminusone=!langselectedlistitem! - 1
+    set /a selectedlistitemminusone=!selectedlistitem! - 1
     for %%x in (!normallanguagelist!) do (
 
         if "!selectedlanguage!" == "" (
 
-            if "!line!" == "!langselectedlistitemminusone!" (
+            if "!line!" == "!selectedlistitemminusone!" (
                 set selectedlanguage=%%x
             )
         )
