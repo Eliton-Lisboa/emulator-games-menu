@@ -1,0 +1,9 @@
+[f]                _______________
+[f]               /         hhh  /
+[f]              /  ccc         /
+[f]            /  hhh giinnn  /
+[f]          / mmmmmmmmmmmm /
+[2]         / m[f]mmmmmmmmm   /
+[6]       /[f]               /
+[c]      / [6]HH[2]HH         [f]/
+[c]     /___[6]___[2]___[f]_____/

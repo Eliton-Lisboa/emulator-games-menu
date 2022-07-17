@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion & : [text, &result]
 	set window-width=0
 	set "if-or=n"
 
-	call "%~dp0\string-length" "%~1", length
+	call string-length "%~1", length
 	call config\get-configfile-prop "window-size-width", window-width
 
 	if "!window-width!" == "no file" set window-width=!window-size-width!

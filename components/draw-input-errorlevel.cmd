@@ -6,11 +6,11 @@ setlocal enabledelayedexpansion & : [text, errorlevel]
 
   set "color=f"
 
-  if %~2 == 1 set "color=!window-color-success!"
-  if %~2 == 2 set "color=!window-color-warn!"
-  if %~2 == 3 set "color=!window-color-error!"
+  if %~2 == 1 set "color=2"
+  if %~2 == 2 set "color=4"
+  if %~2 == 3 set "color=c"
 
-  cecho  {!window-color-background!!color!}%~1:{!window-color!} 
+  vecho /end:pointer [!color!]%~1: 
 
 (
   endlocal

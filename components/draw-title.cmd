@@ -1,7 +1,3 @@
-setlocal enabledelayedexpansion & : [text]
-	call !window-libs-path!\draw-center-text "{&1&3}-{&1&4}-{&1&5}-{&1&2} %~1 {&1&3}-{&1&4}-{&1&5}-", 4
+: [title]
 
-(
-	endlocal
-	exit /b 0
-)
+vecho /x:center [0c]-[06]-[0a]-[0f] %~1 [0c]-[06]-[0a]-

@@ -3,7 +3,6 @@ setlocal enabledelayedexpansion
 title !window-title! - Login
 
 set "menu="
-set "menu-show="
 set "tmp-user-name="
 set "tmp-user-pass="
 
@@ -11,34 +10,26 @@ set "result="
 set error-level=0
 
 :ini (
-  set "menu-show="
-
   call database\get\all-users menu
   set menu=!menu! "" "Back"
-
-  for %%x in (!menu!) do (
-    call lib\center-text %%x, result
-    set menu-show=!menu-show! "!result!"
-  )
-
 )
 
-:home (
+(
   cls
   echo.
-  call components\draw-title "Login"
+  call draw-title Login
   echo.
-  call lib\draw "spreadsheet"
+  call draw spreadsheet
   echo.
-  call lib\draw-center-text "Type {&1&4}'name'{&0} to reselect the name", 1
-  call lib\draw-center-text "Type {&1&4}'recovery'{&0} to recovery account", 1
-  call lib\draw-center-text "Type {&1&4}'back'{&0} to go back", 1
+  vecho /x:center Type [6]'name'[] to reselect the name  
+  vecho /x:center Type [6]'recovery'[] to recovery account  
+  vecho /x:center Type [6]'back'[] to go back  
   echo.
 
   :home-name (
-    cmdmenusel f880 !menu-show!
+    lisch /format:list /type:select !menu!
 
-    call lib\get-array-vector menu, !errorlevel!, result
+    call get-array-vector menu, !errorlevel!, result
     set result=!result:~1,-1!
 
     if "!result!" == "Back" screens\welcome
@@ -50,8 +41,8 @@ set error-level=0
   echo.
 
   :home-pass (
-    call components\draw-input-errorlevel "Type your user password", !error-level!
-    call components\type-password tmp-user-pass
+    call draw-input-errorlevel "Type your user password", !error-level!
+    call type-password tmp-user-pass
 
     if "!tmp-user-pass!" == "back" screens\welcome
     if "!tmp-user-pass!" == "name" goto :ini
